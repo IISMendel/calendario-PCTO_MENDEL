@@ -76,6 +76,39 @@
     .activity-tag { background: linear-gradient(135deg, var(--accent-color), var(--primary-color)); color:#fff;
       padding:4px 8px; border-radius:14px; font-size:.78rem; font-weight:700; align-self:flex-start; }
 
+    /* Settimanale */
+    .week-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
+    .week-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+      background: var(--light-color);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-light);
+    }
+    .week-day-header {
+      background: linear-gradient(135deg, var(--dark-color), #34495e);
+      color: white;
+      padding: 12px 8px;
+      text-align: center;
+      font-weight: 700;
+      font-size: .9rem;
+    }
+    .week-day {
+      background: white;
+      min-height: 110px;
+      padding: 10px;
+      border: 1px solid transparent;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+    }
+    .week-day.other-month { background:#f8f9fa; color:var(--text-secondary); cursor:default; }
+    .week-day.has-activity { border-left:5px solid var(--primary-color); }
+    .week-day.today { outline:3px solid #FF1744; outline-offset:-3px; border-radius:6px; }
+
     /* Annuale */
     .year-grid { display:grid; grid-template-columns: repeat(4, 1fr); gap:20px; }
     @media (max-width: 1100px) { .year-grid { grid-template-columns: repeat(2, 1fr); } }
@@ -191,18 +224,18 @@
         </div>
 
         <div id="weekly" class="content-section">
-          <div class="month-header">
-            <button class="nav-button" onclick="previousWeek()">‹</button>
-            <div class="current-period" id="weekTitle">Settimana 1 - Settembre 2025</div>
-            <button class="nav-button" onclick="nextWeek()">›</button>
-          </div>
-          <div class="week-grid" id="weekGrid"></div>
-          <div style="text-align: center; margin-top: 20px;">
+          <div class="week-header">
+            <div class="nav-buttons-group">
+              <button class="nav-button" onclick="previousWeek()">‹</button>
+              <div class="current-period" id="weekTitle">Settimana 1 - Settembre 2025</div>
+              <button class="nav-button" onclick="nextWeek()">›</button>
+            </div>
             <button class="action-button export-week" onclick="exportCalendarToIcs('week')">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
               Esporta la settimana
             </button>
           </div>
+          <div class="week-grid" id="weekGrid"></div>
         </div>
 
         <div id="annual" class="content-section">
@@ -247,14 +280,14 @@
     </div>
 
     <div id="instructions" style="background:#fff; border-radius:16px; padding:20px; margin-top:20px; box-shadow:var(--shadow-light);">
-      <h3>Guida per l'importazione su Google Calendar</h3>
-      <p>Il calendario offre 3 opzioni per sincronizzare le attività:</p>
+      <h3>Guida per l'esportazione e la sincronizzazione del calendario</h3>
+      <p>Il calendario offre 3 opzioni per sincronizzare le attività con il tuo calendario personale:</p>
       <ol>
         <li>
-          <strong>Esportare una singola attività:</strong> Clicca su un giorno del calendario con un evento. Apparirà un pulsante che ti permetterà di aggiungere quell'attività specifica al tuo calendario in un solo passaggio.
+          <strong>Esportare un'attività singola:</strong> Clicca su un giorno del calendario con un evento. Apparirà un pulsante che ti permetterà di aggiungere quell'attività specifica al tuo calendario in un solo passaggio.
         </li>
         <li>
-          <strong>Esportare il mese o l'anno intero:</strong> Clicca sul pulsante "Esporta il mese" o "Esporta l'anno" nella vista corrispondente. Verrà scaricato un file in formato `.ics`.
+          <strong>Esportare un mese, una settimana o l'anno intero:</strong> Clicca sul pulsante "Esporta il mese", "Esporta la settimana" o "Esporta l'anno" nella vista corrispondente. Verrà scaricato un file in formato `.ics`.
         </li>
       </ol>
       <p>
@@ -262,7 +295,7 @@
         <ol>
           <li>Dopo aver scaricato il file, si aprirà una nuova scheda che ti reindirizza alla pagina di importazione di Google Calendar.</li>
           <li>In quella pagina, clicca su **"Seleziona un file dal computer"** e scegli il file .ics appena scaricato.</li>
-          <li>Scegli in quale tuo calendario vuoi importare gli eventi e clicca su **"Importa"**.</li>
+          <li>Scegli in quale calendario vuoi importare gli eventi e clicca su **"Importa"**.</li>
         </ol>
       </p>
     </div>
@@ -272,7 +305,7 @@
     const pctoData = {
       "2025-08": { 28: { day: "G", activity: "Oggi", type: "OGGI", description: "Data odierna - 28 Agosto 2025" } },
       "2025-09": {
-        1: { day: "L", activity: "Inizio attività ordinaria", type: "LEZIONI", description: "Avvio delle attività didattiche per l'anno scolastico 2025-2026" },
+        1: { day: "L", activity: "Collegio", type: "COLLEGIO", description: "Collegio dei docenti per l'inizio dell'anno scolastico" },
         12: { day: "V", activity: "INIZIO LEZIONI", type: "LEZIONI", description: "Primo giorno ufficiale di lezione" },
         15: { day: "L", activity: "4PA", type: "4PA", description: "Attività PCTO per la classe 4PA" },
         16: { day: "M", activity: "4PA", type: "4PA", description: "Attività PCTO per la classe 4PA" },
@@ -485,12 +518,12 @@
       "3PA": "#FF6B6B","4PA": "#4ECDC4","3PB": "#45B7D1","4PB": "#96CEB4","3PC": "#FECA57","4PC": "#FF9FF3",
       "2PA": "#54A0FF","2PB": "#5F27CD","3A": "#00D2D3","3B": "#FF9F43","3C": "#10AC84","3D": "#EE5A24",
       "4A": "#0984E3","4B": "#6C5CE7","4C": "#A29BFE","4D": "#FD79A8",
-      "VACANZE": "#E17055","FESTIVITÀ": "#FDCB6E","SOSPENSIONE": "#BDC3C7","LEZIONI": "#00B894","OGGI": "#FF1744",
-      "PCTO_ESTIVO": "#9C27B0","ESAMI": "#FF5722"
+      "VACANZE": "#E17055","FESTIVITÀ": "#FDCB6E","SOSPENSIONE": "#BDC3C7","LEZIONI": "#00B894",
+      "OGGI": "#FF1744","PCTO_ESTIVO": "#9C27B0","ESAMI": "#FF5722", "COLLEGIO": "#4ECDC4"
     };
 
     const months = ["Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre"];
-    const shortDays = ["Dom","Lun","Mar","Mer","Gio","Ven","Sab"];
+    const shortDays = ["Lun","Mar","Mer","Gio","Ven","Sab","Dom"];
     let currentMonth = 8;
     let currentYear = 2025;
     let currentWeek = 0;
@@ -520,28 +553,62 @@
 
       document.getElementById('monthTitle').textContent = `${months[currentMonth]} ${currentYear}`;
       let html = '';
-      shortDays.forEach(d => html += `<div class="month-day-header">${d}</div>`);
-      for(let i=0;i<startDow;i++){ html += `<div class="month-day other-month"></div>`; }
+      const daysOfWeek = ["Dom","Lun","Mar","Mer","Gio","Ven","Sab"];
+      daysOfWeek.forEach(d => html += `<div class="month-day-header">${d}</div>`);
+      
+      const firstDayCorrected = (startDow === 0) ? 6 : startDow - 1;
+
+      for(let i=0;i<firstDayCorrected;i++){ html += `<div class="month-day other-month"></div>`; }
+
       const t = todayInfo();
       for(let d=1; d<=daysInMonth; d++){
         const data = pctoData[monthKey] && pctoData[monthKey][d];
         const has = data ? 'has-activity' : '';
         const isToday = (currentYear===t.y && currentMonth===t.m && d===t.d) ? 'today' : '';
         const color = data ? (activityColors[data.type]||'#667eea') : null;
+        const activityTag = data ? `<div class="activity-tag" style="background:${color}">${data.type}</div>` : '';
+
         html += `<div class="month-day ${has} ${isToday}" onclick="selectDay('${monthKey}', ${d})">`+
                   `<div class="day-number">${d}</div>`+
-                  (data ? `<div class="activity-tag" style="background:${color}">${data.type}</div>` : ``)+
+                  activityTag +
                 `</div>`;
       }
       document.getElementById('monthGrid').innerHTML = html;
     }
 
     function generateWeeklyView(){
-      const start = new Date(currentYear, currentMonth, 1 + currentWeek*7);
-      const title = `Settimana ${currentWeek+1} - ${months[currentMonth]} ${currentYear}`;
-      document.getElementById('weekTitle').textContent = title;
-      let html = '<div style="padding:12px; color:#7f8c8d;">Vista settimanale in preparazione.</div>';
-      document.getElementById('weekGrid').innerHTML = html;
+        let html = '';
+        const weekStart = new Date(currentYear, currentMonth, 1);
+        const firstDayOfWeek = weekStart.getDay();
+        const startOffset = (firstDayOfWeek === 0) ? 6 : firstDayOfWeek - 1;
+        weekStart.setDate(weekStart.getDate() - startOffset);
+        weekStart.setDate(weekStart.getDate() + (currentWeek * 7));
+
+        const weekEnd = new Date(weekStart);
+        weekEnd.setDate(weekStart.getDate() + 6);
+        const weekTitle = `${weekStart.getDate()} ${months[weekStart.getMonth()]} ${weekStart.getFullYear()} - ${weekEnd.getDate()} ${months[weekEnd.getMonth()]} ${weekEnd.getFullYear()}`;
+        document.getElementById('weekTitle').textContent = weekTitle;
+        
+        const daysOfWeek = ["Lun","Mar","Mer","Gio","Ven","Sab","Dom"];
+        daysOfWeek.forEach(d => html += `<div class="week-day-header">${d}</div>`);
+        
+        const t = todayInfo();
+        for (let i = 0; i < 7; i++) {
+            const day = new Date(weekStart);
+            day.setDate(weekStart.getDate() + i);
+            const monthKey = `${day.getFullYear()}-${String(day.getMonth() + 1).padStart(2, '0')}`;
+            const dayData = pctoData[monthKey] && pctoData[monthKey][day.getDate()];
+            const hasActivity = dayData ? 'has-activity' : '';
+            const isToday = (day.getFullYear() === t.y && day.getMonth() === t.m && day.getDate() === t.d) ? 'today' : '';
+            const color = dayData ? (activityColors[dayData.type] || '#667eea') : null;
+            const activityTag = dayData ? `<div class="activity-tag" style="background:${color}">${dayData.type}</div>` : '';
+
+            html += `<div class="week-day ${hasActivity} ${isToday}" onclick="selectDay('${monthKey}', ${day.getDate()})">`+
+                      `<div class="day-number">${day.getDate()}</div>`+
+                      activityTag +
+                    `</div>`;
+        }
+        document.getElementById('weekGrid').innerHTML = html;
     }
 
     function generateAnnualView(){
@@ -561,16 +628,22 @@
       const t = todayInfo();
       const isCurrent = (year===t.y && month===t.m);
       let html = `<div class="mini-month"><div class="mini-month-header">${months[month]} ${year}</div><div class="mini-month-grid">`;
-      shortDays.forEach(d => html += `<div class="mini-dow">${d[0]}</div>`);
-      for(let i=0;i<startDow;i++){ html += `<div class="mini-day muted"></div>`; }
-      let filled = startDow;
+      const daysOfWeek = ["Lun","Mar","Mer","Gio","Ven","Sab","Dom"];
+      daysOfWeek.forEach(d => html += `<div class="mini-dow">${d[0]}</div>`);
+      
+      const firstDayCorrected = (startDow === 0) ? 6 : startDow - 1;
+      for(let i=0;i<firstDayCorrected;i++){ html += `<div class="mini-day muted"></div>`; }
+
+      let filled = firstDayCorrected;
       for(let d=1; d<=daysInMonth; d++){
         const data = pctoData[monthKey] && pctoData[monthKey][d];
         const has = data ? 'has-activity' : '';
         const isToday = (isCurrent && d===t.d) ? 'today' : '';
         const color = data ? (activityColors[data.type]||'#667eea') : null;
+        const activityTag = data ? `<div class="mini-activity-text">${data.type}</div>` : '';
+
         html += `<div class="mini-day ${has} ${isToday}" ${color?`style="background:${color}"`:''} title="${data?data.activity:''}" onclick="selectDay('${monthKey}',${d})">`+
-                  `${d}${data ? `<div class="mini-activity-text">${data.type}</div>` : ``}`+
+                  `${d}${activityTag}`+
                 `</div>`;
         filled++;
       }
@@ -592,14 +665,36 @@
 
     function previousMonth(){ if(currentMonth===0){ currentMonth=11; currentYear--; } else currentMonth--; generateMonthlyView(); }
     function nextMonth(){ if(currentMonth===11){ currentMonth=0; currentYear++; } else currentMonth++; generateMonthlyView(); }
-    function previousWeek(){ currentWeek = Math.max(0, currentWeek-1); generateWeeklyView(); }
-    function nextWeek(){ currentWeek = Math.min(3, currentWeek+1); generateWeeklyView(); }
+
+    function previousWeek(){ 
+      const newWeekStart = new Date(currentYear, currentMonth, 1 + ((currentWeek - 1) * 7));
+      if (newWeekStart.getMonth() !== currentMonth && newWeekStart.getFullYear() === currentYear) {
+        currentMonth--;
+        currentWeek = Math.floor((new Date(currentYear, currentMonth + 1, 0).getDate() + new Date(currentYear, currentMonth, 1).getDay()) / 7);
+      } else {
+        currentWeek--;
+      }
+      if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+      generateWeeklyView(); 
+    }
+    
+    function nextWeek(){ 
+      const newWeekStart = new Date(currentYear, currentMonth, 1 + ((currentWeek + 1) * 7));
+      if (newWeekStart.getMonth() !== currentMonth && newWeekStart.getFullYear() === currentYear) {
+        currentMonth++;
+        currentWeek = 0;
+      } else {
+        currentWeek++;
+      }
+      if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+      generateWeeklyView();
+    }
 
     function selectDay(monthKey, day){
       const data = pctoData[monthKey] && pctoData[monthKey][day];
       const calendarButtonsDiv = document.getElementById('calendarButtons');
       
-      if(data){
+      if(data && data.activity){
         document.getElementById('currentActivity').textContent = data.activity;
         document.getElementById('activityInfo').innerHTML = `<p><strong>Tipo:</strong> ${data.type}</p><p><strong>Giorno:</strong> ${data.day}</p><p><strong>Descrizione:</strong> ${data.description}</p>`;
         
@@ -628,21 +723,29 @@
     function exportCalendarToIcs(scope) {
         let eventsToExport = {};
         let filename;
-        let exportAll = false;
         
         if (scope === 'month') {
             const monthKey = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}`;
             eventsToExport = pctoData[monthKey] || {};
             filename = `calendario-pcto-${months[currentMonth]}-${currentYear}.ics`;
         } else if (scope === 'year') {
-            exportAll = true;
+            for (const monthKey in pctoData) {
+                if (pctoData.hasOwnProperty(monthKey)) {
+                    Object.assign(eventsToExport, pctoData[monthKey]);
+                }
+            }
             filename = `calendario-pcto-anno-scolastico-${currentYear}-${currentYear + 1}.ics`;
         } else if (scope === 'week') {
-            const weekStart = new Date(currentYear, currentMonth, 1 + (currentWeek * 7));
+            const weekStart = new Date(currentYear, currentMonth, 1);
+            const firstDayOfWeek = weekStart.getDay();
+            const startOffset = (firstDayOfWeek === 0) ? 6 : firstDayOfWeek - 1;
+            weekStart.setDate(weekStart.getDate() - startOffset);
+            weekStart.setDate(weekStart.getDate() + (currentWeek * 7));
+
             const weekEnd = new Date(weekStart);
             weekEnd.setDate(weekStart.getDate() + 6);
-            filename = `calendario-pcto-settimana-${currentWeek+1}-${months[currentMonth]}-${currentYear}.ics`;
-
+            filename = `calendario-pcto-settimana-${weekStart.getDate()}-${weekEnd.getDate()}-${months[weekStart.getMonth()]}-${weekStart.getFullYear()}.ics`;
+            
             for (let i = 0; i < 7; i++) {
                 const day = new Date(weekStart);
                 day.setDate(weekStart.getDate() + i);
@@ -650,14 +753,6 @@
                 const dayData = pctoData[dayKey] && pctoData[dayKey][day.getDate()];
                 if (dayData) {
                     eventsToExport[day.getDate()] = dayData;
-                }
-            }
-        }
-
-        if (exportAll) {
-            for (const monthKey in pctoData) {
-                if (pctoData.hasOwnProperty(monthKey)) {
-                    Object.assign(eventsToExport, pctoData[monthKey]);
                 }
             }
         }
@@ -674,11 +769,6 @@
             const eventDate = new Date(currentYear, currentMonth, parseInt(day));
             const monthKey = `${eventDate.getFullYear()}-${String(eventDate.getMonth() + 1).padStart(2, '0')}`;
             
-            if (scope === 'year' && event.type) {
-                const fullYear = monthKey.substring(0, 4);
-                if (fullYear < 2025 || fullYear > 2026) continue;
-            }
-
             if (event.type && event.type !== 'OGGI' && event.type !== 'LEZIONI') {
                 const date = new Date(currentYear, currentMonth, parseInt(day));
                 const isoDate = `${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}`;
@@ -686,7 +776,7 @@
                 icsContent += `BEGIN:VEVENT\n`;
                 icsContent += `UID:${isoDate}-${event.activity}@iismendel.edu.it\n`;
                 icsContent += `DTSTART;VALUE=DATE:${isoDate}\n`;
-                icsContent += `DTEND;VALUE=DATE:${isoDate}\n`; // Same day events
+                icsContent += `DTEND;VALUE=DATE:${isoDate}\n`; 
                 icsContent += `SUMMARY:PCTO - ${event.activity}\n`;
                 icsContent += `DESCRIPTION:${event.description}\n`;
                 icsContent += `END:VEVENT\n`;
