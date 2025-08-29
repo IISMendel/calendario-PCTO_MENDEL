@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>📚 Calendario PCTO 2025-2026 - Interactive Dashboard</title>
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>📚 Calendario PCTO 2025-2026 - Interactive Dashboard</title>
+<style>
     :root {
       --primary-color: #667eea;
       --secondary-color: #764ba2;
@@ -192,327 +193,116 @@
 
     @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
   </style>
-</head>
+<style>
+@media print {
+  .legend, .legend-container, #legend,
+  .legend-section, .legend-title {
+    display: none !important;
+  }
+}
+</style></head>
 <body>
-  <div class="main-container">
-    <div class="dashboard-header">
-      <h1 class="dashboard-title">📚 Calendario PCTO</h1>
-      <p class="dashboard-subtitle">Piano Percorsi Competenze Trasversali e Orientamento 2025-2026</p>
-    </div>
-
-    <div class="calendar-container">
-      <div class="tabs-container">
-        <button class="tab active" onclick="showTab(event,'monthly')">📅 Vista Mensile</button>
-        <button class="tab" onclick="showTab(event,'weekly')">📊 Vista Settimanale</button>
-        <button class="tab" onclick="showTab(event,'annual')">🗓️ Vista Annuale</button>
-      </div>
-
-      <div class="calendar-content">
-        <div id="monthly" class="content-section active">
-          <div class="month-header">
-            <div class="nav-buttons-group">
-                <button class="nav-button" onclick="previousMonth()">‹</button>
-                <div class="current-period" id="monthTitle">Settembre 2025</div>
-                <button class="nav-button" onclick="nextMonth()">›</button>
-            </div>
-            <button class="action-button export-month" onclick="exportCalendarToIcs('month')">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+<div class="main-container">
+<div class="dashboard-header">
+<h1 class="dashboard-title">📚 Calendario PCTO</h1>
+<p class="dashboard-subtitle">Piano Percorsi Competenze Trasversali e Orientamento 2025-2026</p>
+</div>
+<div class="calendar-container">
+<div class="tabs-container">
+<button class="tab active" onclick="showTab(event,'monthly')">📅 Vista Mensile</button>
+<button class="tab" onclick="showTab(event,'weekly')">📊 Vista Settimanale</button>
+<button class="tab" onclick="showTab(event,'annual')">🗓️ Vista Annuale</button>
+</div>
+<div class="calendar-content">
+<div class="content-section active" id="monthly">
+<div class="month-header" style="display:flex; justify-content:space-between; align-items:center;">
+<div class="nav-buttons-group">
+<button class="nav-button" onclick="previousMonth()">‹</button>
+<div class="current-period" id="monthTitle">Settembre 2025</div>
+<button class="nav-button" onclick="nextMonth()">›</button>
+</div>
+<div class="flex gap-2"><a class="action-button export-month" href="https://agrariomendel.edu.it/allegati/all/4998-piano-pcto-2025-2026.pdf" rel="noopener" target="_blank">Scarica PDF</a></div><button class="action-button export-month" onclick="exportCalendarToIcs('month')">
+<svg class="feather feather-download" fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" x2="12" y1="15" y2="3"></line></svg>
               Esporta il mese
             </button>
-          </div>
-          <div class="month-grid" id="monthGrid"></div>
-        </div>
-
-        <div id="weekly" class="content-section">
-          <div class="week-header">
-            <div class="nav-buttons-group">
-              <button class="nav-button" onclick="previousWeek()">‹</button>
-              <div class="current-period" id="weekTitle">Settimana 1 - Settembre 2025</div>
-              <button class="nav-button" onclick="nextWeek()">›</button>
-            </div>
-            <button class="action-button export-week" onclick="exportCalendarToIcs('week')">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+</div>
+<div class="month-grid" id="monthGrid"></div>
+</div>
+<div class="content-section" id="weekly">
+<div class="week-header">
+<div class="nav-buttons-group">
+<button class="nav-button" onclick="previousWeek()">‹</button>
+<div class="current-period" id="weekTitle">Settimana 1 - Settembre 2025</div>
+<button class="nav-button" onclick="nextWeek()">›</button>
+</div>
+<button class="action-button export-week" onclick="exportCalendarToIcs('week')">
+<svg class="feather feather-download" fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" x2="12" y1="15" y2="3"></line></svg>
               Esporta la settimana
             </button>
-          </div>
-          <div class="week-grid" id="weekGrid"></div>
-        </div>
-
-        <div id="annual" class="content-section">
-          <div class="current-period" style="text-align:center; margin-bottom:18px;">Anno Scolastico 2025-2026</div>
-          <div class="year-grid" id="yearGrid"></div>
-          <div style="text-align: center; margin-top: 20px;">
-            <button class="action-button export-year" onclick="exportCalendarToIcs('year')">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+</div>
+<div class="week-grid" id="weekGrid"></div>
+</div>
+<div class="content-section" id="annual">
+<div class="current-period" style="text-align:center; margin-bottom:18px;">Anno Scolastico 2025-2026</div>
+<div class="year-grid" id="yearGrid"></div>
+<div style="text-align: center; margin-top: 20px;">
+<button class="action-button export-year" onclick="exportCalendarToIcs('year')">
+<svg class="feather feather-download" fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" x2="12" y1="15" y2="3"></line></svg>
               Esporta l'anno
             </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="info-panel">
-      <div class="legend-section">
-        <div class="legend-title">🎯 Legenda Attività PCTO</div>
-        <div class="legend-grid" id="legendContainer"></div>
-        <div style="text-align: center; margin-top: 20px;">
-          <button class="action-button print" onclick="window.print()">
+</div>
+</div>
+</div>
+</div>
+<div class="info-panel">
+<div class="legend-section">
+<div class="legend-title">🎯 Legenda Attività PCTO</div>
+<div class="legend-grid" id="legendContainer"></div>
+<div style="text-align: center; margin-top: 20px;">
+<button class="action-button print" onclick="window.print()">
             🖨️ Stampa
           </button>
-        </div>
-      </div>
-      <div class="activity-details">
-        <div class="activity-summary">
-          <h4>📋 Attività Corrente</h4>
-          <p id="currentActivity">Nessuna attività selezionata</p>
-        </div>
-        <div id="activityInfo">
-          <p>Seleziona una data nel calendario per visualizzare i dettagli delle attività PCTO programmate.</p>
-        </div>
-        <div id="calendarButtons" class="button-container">
-          </div>
-      </div>
-    </div>
-
-    <div class="school-footer">
-      <div class="footer-title">Pagina creata dal Team Buone Pratiche dell'IIS MENDEL</div>
-      <div class="footer-address">Via Ferrazzi 15 - 20035 Villa Cortese (MI)</div>
-    </div>
-
-    <div id="instructions" style="background:#fff; border-radius:16px; padding:20px; margin-top:20px; box-shadow:var(--shadow-light);">
-      <h3>Guida per l'esportazione e la sincronizzazione del calendario</h3>
-      <p>Il calendario offre 3 opzioni per sincronizzare le attività con il tuo calendario personale:</p>
-      <ol>
-        <li>
-          <strong>Esportare un'attività singola:</strong> Clicca su un giorno del calendario con un evento. Apparirà un pulsante che ti permetterà di aggiungere quell'attività specifica al tuo calendario in un solo passaggio.
+</div>
+</div>
+<div class="activity-details">
+<div class="activity-summary">
+<h4>📋 Attività Corrente</h4>
+<p id="currentActivity">Nessuna attività selezionata</p>
+</div>
+<div id="activityInfo">
+<p>Seleziona una data nel calendario per visualizzare i dettagli delle attività PCTO programmate.</p>
+</div>
+<div class="button-container" id="calendarButtons">
+</div>
+</div>
+</div>
+<div class="school-footer">
+<div class="footer-title">Pagina creata dal Team Buone Pratiche dell'IIS MENDEL</div>
+<div class="footer-address">Via Ferrazzi 15 - 20035 Villa Cortese (MI)</div>
+</div>
+<div id="instructions" style="background:#fff; border-radius:16px; padding:20px; margin-top:20px; box-shadow:var(--shadow-light);">
+<h3>Guida per l'esportazione e la sincronizzazione del calendario</h3>
+<p>Il calendario offre 3 opzioni per sincronizzare le attività con il tuo calendario personale:</p>
+<ol>
+<li>
+<strong>Esportare un'attività singola:</strong> Clicca su un giorno del calendario con un evento. Apparirà un pulsante che ti permetterà di aggiungere quell'attività specifica al tuo calendario in un solo passaggio.
         </li>
-        <li>
-          <strong>Esportare un mese, una settimana o l'anno intero:</strong> Clicca sul pulsante "Esporta il mese", "Esporta la settimana" o "Esporta l'anno" nella vista corrispondente. Verrà scaricato un file in formato `.ics`.
+<li>
+<strong>Esportare un mese, una settimana o l'anno intero:</strong> Clicca sul pulsante "Esporta il mese", "Esporta la settimana" o "Esporta l'anno" nella vista corrispondente. Verrà scaricato un file in formato `.ics`.
         </li>
-      </ol>
-      <p>
-        <strong>Come importare un file .ics su Google Calendar:</strong>
-        <ol>
-          <li>Dopo aver scaricato il file, si aprirà una nuova scheda che ti reindirizza alla pagina di importazione di Google Calendar.</li>
-          <li>In quella pagina, clicca su **"Seleziona un file dal computer"** e scegli il file .ics appena scaricato.</li>
-          <li>Scegli in quale calendario vuoi importare gli eventi e clicca su **"Importa"**.</li>
-        </ol>
-      </p>
-    </div>
-  </div>
-
-  <script>
-    const pctoData = {
-      "2025-08": { 28: { day: "G", activity: "Oggi", type: "OGGI", description: "Data odierna - 28 Agosto 2025" } },
-      "2025-09": {
-        1: { day: "L", activity: "Collegio", type: "COLLEGIO", description: "Collegio dei docenti per l'inizio dell'anno scolastico" },
-        12: { day: "V", activity: "INIZIO LEZIONI", type: "LEZIONI", description: "Primo giorno ufficiale di lezione" },
-        15: { day: "L", activity: "4PA", type: "4PA", description: "Attività PCTO per la classe 4PA" },
-        16: { day: "M", activity: "4PA", type: "4PA", description: "Attività PCTO per la classe 4PA" },
-        17: { day: "M", activity: "4PA", type: "4PA", description: "Attività PCTO per la classe 4PA" },
-        18: { day: "G", activity: "4PA", type: "4PA", description: "Attività PCTO per la classe 4PA" },
-        19: { day: "V", activity: "4PA", type: "4PA", description: "Attività PCTO per la classe 4PA" },
-        20: { day: "S", activity: "4PA", type: "4PA", description: "Attività PCTO per la classe 4PA" },
-        22: { day: "L", activity: "4PB", type: "4PB", description: "Attività PCTO per la classe 4PB" },
-        23: { day: "M", activity: "4PB", type: "4PB", description: "Attività PCTO per la classe 4PB" },
-        24: { day: "M", activity: "4PB", type: "4PB", description: "Attività PCTO per la classe 4PB" },
-        25: { day: "G", activity: "4PB", type: "4PB", description: "Attività PCTO per la classe 4PB" },
-        26: { day: "V", activity: "4PB", type: "4PB", description: "Attività PCTO per la classe 4PB" },
-        27: { day: "S", activity: "4PB", type: "4PB", description: "Attività PCTO per la classe 4PB" },
-        29: { day: "L", activity: "3PA", type: "3PA", description: "Attività PCTO per la classe 3PA" },
-        30: { day: "M", activity: "3PA", type: "3PA", description: "Attività PCTO per la classe 3PA" }
-      },
-      "2025-10": {
-        1: { day: "M", activity: "3PA", type: "3PA", description: "Attività PCTO per la classe 3PA" },
-        2: { day: "G", activity: "3PA", type: "3PA", description: "Attività PCTO per la classe 3PA" },
-        3: { day: "V", activity: "3PA", type: "3PA", description: "Attività PCTO per la classe 3PA" },
-        6: { day: "L", activity: "3PB", type: "3PB", description: "Attività PCTO per la classe 3PB" },
-        7: { day: "M", activity: "3PB", type: "3PB", description: "Attività PCTO per la classe 3PB" },
-        8: { day: "M", activity: "3PB", type: "3PB", description: "Attività PCTO per la classe 3PB" },
-        9: { day: "G", activity: "3PB", type: "3PB", description: "Attività PCTO per la classe 3PB" },
-        10: { day: "V", activity: "3PB", type: "3PB", description: "Attività PCTO per la classe 3PB" },
-        13: { day: "L", activity: "3PC", type: "3PC", description: "Attività PCTO per la classe 3PC" },
-        14: { day: "M", activity: "3PC", type: "3PC", description: "Attività PCTO per la classe 3PC" },
-        15: { day: "M", activity: "3PC", type: "3PC", description: "Attività PCTO per la classe 3PC" },
-        16: { day: "G", activity: "3PC", type: "3PC", description: "Attività PCTO per la classe 3PC" },
-        17: { day: "V", activity: "3PC", type: "3PC", description: "Attività PCTO per la classe 3PC" },
-        20: { day: "L", activity: "4A", type: "4A", description: "Attività PCTO per la classe 4A" },
-        21: { day: "M", activity: "4A", type: "4A", description: "Attività PCTO per la classe 4A" },
-        22: { day: "M", activity: "4A", type: "4A", description: "Attività PCTO per la classe 4A" },
-        23: { day: "G", activity: "4A", type: "4A", description: "Attività PCTO per la classe 4A" },
-        24: { day: "V", activity: "4A", type: "4A", description: "Attività PCTO per la classe 4A" },
-        27: { day: "L", activity: "4B", type: "4B", description: "Attività PCTO per la classe 4B" },
-        28: { day: "M", activity: "4B", type: "4B", description: "Attività PCTO per la classe 4B" },
-        29: { day: "M", activity: "4B", type: "4B", description: "Attività PCTO per la classe 4B" },
-        30: { day: "G", activity: "4B", type: "4B", description: "Attività PCTO per la classe 4B" },
-        31: { day: "V", activity: "SOSPENSIONE DIDATTICA", type: "SOSPENSIONE", description: "Sospensione delle attività didattiche" }
-      },
-      "2025-11": {
-        1: { day: "S", activity: "Ognissanti", type: "FESTIVITÀ", description: "Festa di Ognissanti" },
-        3: { day: "L", activity: "4C", type: "4C", description: "Attività PCTO per la classe 4C" },
-        4: { day: "M", activity: "4C", type: "4C", description: "Attività PCTO per la classe 4C" },
-        5: { day: "M", activity: "4C", type: "4C", description: "Attività PCTO per la classe 4C" },
-        6: { day: "G", activity: "4C", type: "4C", description: "Attività PCTO per la classe 4C" },
-        7: { day: "V", activity: "4C", type: "4C", description: "Attività PCTO per la classe 4C" },
-        10: { day: "L", activity: "4D", type: "4D", description: "Attività PCTO per la classe 4D" },
-        11: { day: "M", activity: "4D", type: "4D", description: "Attività PCTO per la classe 4D" },
-        12: { day: "M", activity: "4D", type: "4D", description: "Attività PCTO per la classe 4D" },
-        13: { day: "G", activity: "4D", type: "4D", description: "Attività PCTO per la classe 4D" },
-        14: { day: "V", activity: "4D", type: "4D", description: "Attività PCTO per la classe 4D" },
-        17: { day: "L", activity: "4PA", type: "4PA", description: "Attività PCTO per la classe 4PA" },
-        18: { day: "M", activity: "4PA", type: "4PA", description: "Attività PCTO per la classe 4PA" },
-        19: { day: "M", activity: "4PA", type: "4PA", description: "Attività PCTO per la classe 4PA" },
-        20: { day: "G", activity: "4PA", type: "4PA", description: "Attività PCTO per la classe 4PA" },
-        21: { day: "V", activity: "4PA", type: "4PA", description: "Attività PCTO per la classe 4PA" },
-        22: { day: "S", activity: "SOSPENSIONE DIDATTICA", type: "SOSPENSIONE", description: "Sospensione delle attività didattiche" },
-        24: { day: "L", activity: "4PB", type: "4PB", description: "Attività PCTO per la classe 4PB" },
-        25: { day: "M", activity: "4PB", type: "4PB", description: "Attività PCTO per la classe 4PB" },
-        26: { day: "M", activity: "4PB", type: "4PB", description: "Attività PCTO per la classe 4PB" },
-        27: { day: "G", activity: "4PB", type: "4PB", description: "Attività PCTO per la classe 4PB" },
-        28: { day: "V", activity: "4PB", type: "4PB", description: "Attività PCTO per la classe 4PB" },
-        29: { day: "S", activity: "4PB", type: "4PB", description: "Attività PCTO per la classe 4PB" },
-        30: { day: "D", activity: "4PB", type: "4PB", description: "Attività PCTO per la classe 4PB" }
-      },
-      "2025-12": {
-        1: { day: "L", activity: "3PA", type: "3PA", description: "Attività PCTO per la classe 3PA" },
-        2: { day: "M", activity: "3PA", type: "3PA", description: "Attività PCTO per la classe 3PA" },
-        3: { day: "M", activity: "3PA", type: "3PA", description: "Attività PCTO per la classe 3PA" },
-        4: { day: "G", activity: "3PA", type: "3PA", description: "Attività PCTO per la classe 3PA" },
-        5: { day: "V", activity: "3PA", type: "3PA", description: "Attività PCTO per la classe 3PA" },
-        8: { day: "L", activity: "Immacolata", type: "FESTIVITÀ", description: "Immacolata Concezione" },
-        9: { day: "M", activity: "3PB", type: "3PB", description: "Attività PCTO per la classe 3PB" },
-        10: { day: "M", activity: "3PB", type: "3PB", description: "Attività PCTO per la classe 3PB" },
-        11: { day: "G", activity: "3PB", type: "3PB", description: "Attività PCTO per la classe 3PB" },
-        12: { day: "V", activity: "3PB", type: "3PB", description: "Attività PCTO per la classe 3PB" },
-        15: { day: "L", activity: "3PC", type: "3PC", description: "Attività PCTO per la classe 3PC" },
-        16: { day: "M", activity: "3PC", type: "3PC", description: "Attività PCTO per la classe 3PC" },
-        17: { day: "M", activity: "3PC", type: "3PC", description: "Attività PCTO per la classe 3PC" },
-        18: { day: "G", activity: "3PC", type: "3PC", description: "Attività PCTO per la classe 3PC" },
-        19: { day: "V", activity: "3PC", type: "3PC", description: "Attività PCTO per la classe 3PC" },
-        23: { day: "M", activity: "Inizio vacanze di Natale", type: "VACANZE", description: "Inizio delle vacanze natalizie" },
-        25: { day: "G", activity: "SS. Natale", type: "FESTIVITÀ", description: "Santo Natale" },
-        26: { day: "V", activity: "S. Stefano", type: "FESTIVITÀ", description: "Santo Stefano" }
-      },
-      "2026-01": {
-        6: { day: "M", activity: "Fine Vac. Natalizie", type: "LEZIONI", description: "Fine delle vacanze natalizie" },
-        7: { day: "M", activity: "SOSPENSIONE PCTO", type: "SOSPENSIONE", description: "Sospensione attività PCTO" },
-        9: { day: "V", activity: "3A", type: "3A", description: "Attività PCTO per la classe 3A" },
-        10: { day: "S", activity: "3A", type: "3A", description: "Attività PCTO per la classe 3A" },
-        12: { day: "L", activity: "3B", type: "3B", description: "Attività PCTO per la classe 3B" },
-        13: { day: "M", activity: "3B", type: "3B", description: "Attività PCTO per la classe 3B" },
-        14: { day: "M", activity: "3B", type: "3B", description: "Attività PCTO per la classe 3B" },
-        15: { day: "G", activity: "3B", type: "3B", description: "Attività PCTO per la classe 3B" },
-        16: { day: "V", activity: "FINE 1Q", type: "LEZIONI", description: "Fine del primo quadrimestre" },
-        19: { day: "L", activity: "2PA", type: "2PA", description: "Attività PCTO per la classe 2PA" },
-        20: { day: "M", activity: "2PA", type: "2PA", description: "Attività PCTO per la classe 2PA" },
-        21: { day: "M", activity: "2PA", type: "2PA", description: "Attività PCTO per la classe 2PA" },
-        22: { day: "G", activity: "2PA", type: "2PA", description: "Attività PCTO per la classe 2PA" },
-        23: { day: "V", activity: "2PA", type: "2PA", description: "Attività PCTO per la classe 2PA" },
-        26: { day: "L", activity: "2PB", type: "2PB", description: "Attività PCTO per la classe 2PB" },
-        27: { day: "M", activity: "2PB", type: "2PB", description: "Attività PCTO per la classe 2PB" },
-        28: { day: "M", activity: "2PB", type: "2PB", description: "Attività PCTO per la classe 2PB" },
-        29: { day: "G", activity: "2PB", type: "2PB", description: "Attività PCTO per la classe 2PB" },
-        30: { day: "V", activity: "2PB", type: "2PB", description: "Attività PCTO per la classe 2PB" }
-      },
-      "2026-02": {
-        2: { day: "L", activity: "3A", type: "3A", description: "Attività PCTO per la classe 3A" },
-        3: { day: "M", activity: "3A", type: "3A", description: "Attività PCTO per la classe 3A" },
-        4: { day: "M", activity: "3A", type: "3A", description: "Attività PCTO per la classe 3A" },
-        5: { day: "G", activity: "3A", type: "3A", description: "Attività PCTO per la classe 3A" },
-        6: { day: "V", activity: "3A", type: "3A", description: "Attività PCTO per la classe 3A" },
-        16: { day: "L", activity: "3C", type: "3C", description: "Attività PCTO per la classe 3C" },
-        17: { day: "M", activity: "3C", type: "3C", description: "Attività PCTO per la classe 3C" },
-        18: { day: "M", activity: "3C", type: "3C", description: "Attività PCTO per la classe 3C" },
-        19: { day: "G", activity: "3C", type: "3C", description: "Attività PCTO per la classe 3C" },
-        20: { day: "V", activity: "CARNEVALE", type: "FESTIVITÀ", description: "Carnevale" },
-        21: { day: "S", activity: "CARNEVALE", type: "FESTIVITÀ", description: "Carnevale" },
-        23: { day: "L", activity: "3D", type: "3D", description: "Attività PCTO per la classe 3D" },
-        24: { day: "M", activity: "3D", type: "3D", description: "Attività PCTO per la classe 3D" },
-        25: { day: "M", activity: "3D", type: "3D", description: "Attività PCTO per la classe 3D" },
-        26: { day: "G", activity: "3D", type: "3D", description: "Attività PCTO per la classe 3D" },
-        27: { day: "V", activity: "3D", type: "3D", description: "Attività PCTO per la classe 3D" }
-      },
-      "2026-03": {
-        2: { day: "L", activity: "4PA", type: "4PA", description: "Attività PCTO per la classe 4PA" },
-        3: { day: "M", activity: "4PA", type: "4PA", description: "Attività PCTO per la classe 4PA" },
-        4: { day: "M", activity: "4PA", type: "4PA", description: "Attività PCTO per la classe 4PA" },
-        5: { day: "G", activity: "4PA", type: "4PA", description: "Attività PCTO per la classe 4PA" },
-        6: { day: "V", activity: "4PA", type: "4PA", description: "Attività PCTO per la classe 4PA" },
-        9: { day: "L", activity: "4PB", type: "4PB", description: "Attività PCTO per la classe 4PB" },
-        10: { day: "M", activity: "4PB", type: "4PB", description: "Attività PCTO per la classe 4PB" },
-        11: { day: "M", activity: "4PB", type: "4PB", description: "Attività PCTO per la classe 4PB" },
-        12: { day: "G", activity: "4PB", type: "4PB", description: "Attività PCTO per la classe 4PB" },
-        13: { day: "V", activity: "4PB", type: "4PB", description: "Attività PCTO per la classe 4PB" },
-        16: { day: "L", activity: "3PA", type: "3PA", description: "Attività PCTO per la classe 3PA" },
-        17: { day: "M", activity: "3PA", type: "3PA", description: "Attività PCTO per la classe 3PA" },
-        18: { day: "M", activity: "3PA", type: "3PA", description: "Attività PCTO per la classe 3PA" },
-        19: { day: "G", activity: "3PA", type: "3PA", description: "Attività PCTO per la classe 3PA" },
-        20: { day: "V", activity: "3PA", type: "3PA", description: "Attività PCTO per la classe 3PA" },
-        23: { day: "L", activity: "3PB", type: "3PB", description: "Attività PCTO per la classe 3PB" },
-        24: { day: "M", activity: "3PB", type: "3PB", description: "Attività PCTO per la classe 3PB" },
-        25: { day: "M", activity: "3PB", type: "3PB", description: "Attività PCTO per la classe 3PB" },
-        26: { day: "G", activity: "3PB", type: "3PB", description: "Attività PCTO per la classe 3PB" },
-        27: { day: "V", activity: "3PB", type: "3PB", description: "Attività PCTO per la classe 3PB" },
-        30: { day: "L", activity: "3PC", type: "3PC", description: "Attività PCTO per la classe 3PC" },
-        31: { day: "M", activity: "3PC", type: "3PC", description: "Attività PCTO per la classe 3PC" }
-      },
-      "2026-04": {
-        1: { day: "M", activity: "3PC", type: "3PC", description: "Attività PCTO per la classe 3PC" },
-        2: { day: "G", activity: "VAC. PASQUALI", type: "VACANZE", description: "Vacanze pasquali" },
-        3: { day: "V", activity: "VAC. PASQUALI", type: "VACANZE", description: "Vacanze pasquali" },
-        4: { day: "S", activity: "VAC. PASQUALI", type: "VACANZE", description: "Vacanze pasquali" },
-        6: { day: "L", activity: "VAC. PASQUALI", type: "VACANZE", description: "Vacanze pasquali" },
-        7: { day: "M", activity: "VAC. PASQUALI", type: "VACANZE", description: "Vacanze pasquali" },
-        8: { day: "M", activity: "3PC", type: "3PC", description: "Attività PCTO per la classe 3PC" },
-        9: { day: "G", activity: "3PC", type: "3PC", description: "Attività PCTO per la classe 3PC" },
-        10: { day: "V", activity: "3PC", type: "3PC", description: "Attività PCTO per la classe 3PC" },
-        13: { day: "L", activity: "3A", type: "3A", description: "Attività PCTO per la classe 3A" },
-        14: { day: "M", activity: "3A", type: "3A", description: "Attività PCTO per la classe 3A" },
-        15: { day: "M", activity: "3A", type: "3A", description: "Attività PCTO per la classe 3A" },
-        16: { day: "G", activity: "3A", type: "3A", description: "Attività PCTO per la classe 3A" },
-        17: { day: "V", activity: "3A", type: "3A", description: "Attività PCTO per la classe 3A" },
-        20: { day: "L", activity: "3B", type: "3B", description: "Attività PCTO per la classe 3B" },
-        21: { day: "M", activity: "3B", type: "3B", description: "Attività PCTO per la classe 3B" },
-        22: { day: "M", activity: "3B", type: "3B", description: "Attività PCTO per la classe 3B" },
-        23: { day: "G", activity: "3B", type: "3B", description: "Attività PCTO per la classe 3B" },
-        24: { day: "V", activity: "3B", type: "3B", description: "Attività PCTO per la classe 3B" },
-        25: { day: "S", activity: "FESTA LIBERAZIONE", type: "FESTIVITÀ", description: "Festa della Liberazione" },
-        27: { day: "L", activity: "3C", type: "3C", description: "Attività PCTO per la classe 3C" },
-        28: { day: "M", activity: "3C", type: "3C", description: "Attività PCTO per la classe 3C" },
-        29: { day: "M", activity: "3C", type: "3C", description: "Attività PCTO per la classe 3C" },
-        30: { day: "G", activity: "3C", type: "3C", description: "Attività PCTO per la classe 3C" }
-      },
-      "2026-05": {
-        1: { day: "V", activity: "F. Lavoratori", type: "FESTIVITÀ", description: "Festa dei Lavoratori" },
-        4: { day: "L", activity: "3D", type: "3D", description: "Attività PCTO per la classe 3D" },
-        5: { day: "M", activity: "3D", type: "3D", description: "Attività PCTO per la classe 3D" },
-        6: { day: "M", activity: "3D", type: "3D", description: "Attività PCTO per la classe 3D" },
-        7: { day: "G", activity: "3D", type: "3D", description: "Attività PCTO per la classe 3D" },
-        8: { day: "V", activity: "3D", type: "3D", description: "Attività PCTO per la classe 3D" },
-        11: { day: "L", activity: "2PA", type: "2PA", description: "Attività PCTO per la classe 2PA" },
-        12: { day: "M", activity: "2PA", type: "2PA", description: "Attività PCTO per la classe 2PA" },
-        13: { day: "M", activity: "2PA", type: "2PA", description: "Attività PCTO per la classe 2PA" },
-        14: { day: "G", activity: "2PA", type: "2PA", description: "Attività PCTO per la classe 2PA" },
-        15: { day: "V", activity: "2PA", type: "2PA", description: "Attività PCTO per la classe 2PA" },
-        18: { day: "L", activity: "2PB", type: "2PB", description: "Attività PCTO per la classe 2PB" },
-        19: { day: "M", activity: "2PB", type: "2PB", description: "Attività PCTO per la classe 2PB" },
-        20: { day: "M", activity: "2PB", type: "2PB", description: "Attività PCTO per la classe 2PB" },
-        21: { day: "G", activity: "2PB", type: "2PB", description: "Attività PCTO per la classe 2PB" },
-        22: { day: "V", activity: "2PB", type: "2PB", description: "Attività PCTO per la classe 2PB" },
-        25: { day: "L", activity: "SOSPENSIONE DIDATTICA", type: "SOSPENSIONE", description: "Sospensione delle attività didattiche" },
-        26: { day: "M", activity: "2PA", type: "2PA", description: "Attività PCTO per la classe 2PA" },
-        27: { day: "M", activity: "2PA", type: "2PA", description: "Attività PCTO per la classe 2PA" },
-        28: { day: "G", activity: "2PA", type: "2PA", description: "Attività PCTO per la classe 2PA" },
-        29: { day: "V", activity: "2PA", type: "2PA", description: "Attività PCTO per la classe 2PA" }
-      },
-      "2026-06": {
-        1: { day: "L", activity: "SOSPENSIONE", type: "SOSPENSIONE", description: "Sospensione didattica" },
-        2: { day: "M", activity: "F. Repubblica", type: "FESTIVITÀ", description: "Festa della Repubblica" },
-        8: { day: "L", activity: "TERMINE DELLE LEZIONI", type: "LEZIONI", description: "Fine dell'anno scolastico" },
-        9: { day: "M", activity: "INIZIO PCTO ESTIVO", type: "PCTO_ESTIVO", description: "Inizio attività PCTO estive" },
-        17: { day: "M", activity: "INIZIO ESAMI STATO", type: "ESAMI", description: "Inizio Esami di Stato" }
-      }
-    };
+</ol>
+<p>
+<strong>Come importare un file .ics su Google Calendar:</strong>
+<ol>
+<li>Dopo aver scaricato il file, si aprirà una nuova scheda che ti reindirizza alla pagina di importazione di Google Calendar.</li>
+<li>In quella pagina, clicca su **"Seleziona un file dal computer"** e scegli il file .ics appena scaricato.</li>
+<li>Scegli in quale calendario vuoi importare gli eventi e clicca su **"Importa"**.</li>
+</ol>
+</p>
+</div>
+</div>
+<script>
+    const pctoData = { "2025-09": { 1: { day: "L", activity: "Inizio attività ordinaria", type: "Inizio attività ordinaria", description: "Inizio attività ordinaria" }, 12: { day: "V", activity: "INIZIO LEZIONI", type: "INIZIO LEZIONI", description: "INIZIO LEZIONI" }, 15: { day: "L", activity: "4PA", type: "4PA", description: "4PA" }, 16: { day: "M", activity: "4PA", type: "4PA", description: "4PA" }, 17: { day: "M", activity: "4PA", type: "4PA", description: "4PA" }, 18: { day: "G", activity: "4PA", type: "4PA", description: "4PA" }, 19: { day: "V", activity: "4PA", type: "4PA", description: "4PA" }, 22: { day: "L", activity: "4PB", type: "4PB", description: "4PB" }, 23: { day: "M", activity: "4PB", type: "4PB", description: "4PB" }, 24: { day: "M", activity: "4PB", type: "4PB", description: "4PB" }, 25: { day: "G", activity: "4PB", type: "4PB", description: "4PB" }, 26: { day: "V", activity: "4PB", type: "4PB", description: "4PB" }, 29: { day: "L", activity: "3PA", type: "3PA", description: "3PA" }, 30: { day: "M", activity: "3PA", type: "3PA", description: "3PA" } }, "2025-10": { 1: { day: "M", activity: "3PA", type: "3PA", description: "3PA" }, 2: { day: "G", activity: "3PA", type: "3PA", description: "3PA" }, 3: { day: "V", activity: "3PA", type: "3PA", description: "3PA" }, 6: { day: "L", activity: "3PB", type: "3PB", description: "3PB" }, 7: { day: "M", activity: "3PB", type: "3PB", description: "3PB" }, 8: { day: "M", activity: "3PB", type: "3PB", description: "3PB" }, 9: { day: "G", activity: "3PB", type: "3PB", description: "3PB" }, 10: { day: "V", activity: "3PB", type: "3PB", description: "3PB" }, 13: { day: "L", activity: "3PC", type: "3PC", description: "3PC" }, 14: { day: "M", activity: "3PC", type: "3PC", description: "3PC" }, 15: { day: "M", activity: "3PC", type: "3PC", description: "3PC" }, 16: { day: "G", activity: "3PC", type: "3PC", description: "3PC" }, 17: { day: "V", activity: "3PC", type: "3PC", description: "3PC" }, 20: { day: "L", activity: "4A", type: "4A", description: "4A" }, 21: { day: "M", activity: "4A", type: "4A", description: "4A" }, 22: { day: "M", activity: "4A", type: "4A", description: "4A" }, 23: { day: "G", activity: "4A", type: "4A", description: "4A" }, 24: { day: "V", activity: "4A", type: "4A", description: "4A" }, 27: { day: "L", activity: "4B", type: "4B", description: "4B" }, 28: { day: "M", activity: "4B", type: "4B", description: "4B" }, 29: { day: "M", activity: "4B", type: "4B", description: "4B" }, 30: { day: "G", activity: "4B", type: "4B", description: "4B" }, 31: { day: "V", activity: "SOSPENSIONE DIDATTICA", type: "SOSPENSIONE DIDATTICA", description: "SOSPENSIONE DIDATTICA" } }, "2025-11": { 1: { day: "S", activity: "Ognissanti", type: "Ognissanti", description: "Ognissanti" }, 3: { day: "L", activity: "4C", type: "4C", description: "4C" }, 4: { day: "M", activity: "4C", type: "4C", description: "4C" }, 5: { day: "M", activity: "4C", type: "4C", description: "4C" }, 6: { day: "G", activity: "4C", type: "4C", description: "4C" }, 7: { day: "V", activity: "4C", type: "4C", description: "4C" }, 10: { day: "L", activity: "4D", type: "4D", description: "4D" }, 11: { day: "M", activity: "4D", type: "4D", description: "4D" }, 12: { day: "M", activity: "4D", type: "4D", description: "4D" }, 13: { day: "G", activity: "4D", type: "4D", description: "4D" }, 14: { day: "V", activity: "4D", type: "4D", description: "4D" }, 17: { day: "L", activity: "4PA", type: "4PA", description: "4PA" }, 18: { day: "M", activity: "4PA", type: "4PA", description: "4PA" }, 19: { day: "M", activity: "4PA", type: "4PA", description: "4PA" }, 20: { day: "G", activity: "4PA", type: "4PA", description: "4PA" }, 21: { day: "V", activity: "4PA", type: "4PA", description: "4PA" }, 24: { day: "L", activity: "4PB", type: "4PB", description: "4PB" }, 25: { day: "M", activity: "4PB", type: "4PB", description: "4PB" }, 26: { day: "M", activity: "4PB", type: "4PB", description: "4PB" }, 27: { day: "G", activity: "4PB", type: "4PB", description: "4PB" }, 28: { day: "V", activity: "4PB", type: "4PB", description: "4PB" } }, "2025-12": { 1: { day: "L", activity: "3PA", type: "3PA", description: "3PA" }, 2: { day: "M", activity: "3PA", type: "3PA", description: "3PA" }, 3: { day: "M", activity: "3PA", type: "3PA", description: "3PA" }, 4: { day: "G", activity: "3PA", type: "3PA", description: "3PA" }, 5: { day: "V", activity: "3PA", type: "3PA", description: "3PA" }, 8: { day: "L", activity: "Immacolata", type: "Immacolata", description: "Immacolata" }, 9: { day: "M", activity: "3PB", type: "3PB", description: "3PB" }, 10: { day: "M", activity: "3PB", type: "3PB", description: "3PB" }, 11: { day: "G", activity: "3PB", type: "3PB", description: "3PB" }, 12: { day: "V", activity: "3PB", type: "3PB", description: "3PB" }, 15: { day: "L", activity: "3PC", type: "3PC", description: "3PC" }, 16: { day: "M", activity: "3PC", type: "3PC", description: "3PC" }, 17: { day: "M", activity: "3PC", type: "3PC", description: "3PC" }, 18: { day: "G", activity: "3PC", type: "3PC", description: "3PC" }, 19: { day: "V", activity: "3PC", type: "3PC", description: "3PC" }, 22: { day: "L", activity: "SOSPENSIONE DIDATTICA", type: "SOSPENSIONE DIDATTICA", description: "SOSPENSIONE DIDATTICA" }, 23: { day: "M", activity: "inizio vacanze di Natale", type: "inizio vacanze di Natale", description: "inizio vacanze di Natale" }, 25: { day: "G", activity: "SS. Natale", type: "SS. Natale", description: "SS. Natale" } }, "2026-01": { 6: { day: "M", activity: "Fine Vac. Natatale", type: "Fine Vac. Natatale", description: "Fine Vac. Natatale" }, 7: { day: "M", activity: "SOSPENSIONE PCTO", type: "SOSPENSIONE PCTO", description: "SOSPENSIONE PCTO" }, 16: { day: "V", activity: "FINE 1Q", type: "FINE 1Q", description: "FINE 1Q" }, 19: { day: "L", activity: "2PA", type: "2PA", description: "2PA" }, 20: { day: "M", activity: "2PA", type: "2PA", description: "2PA" }, 21: { day: "M", activity: "2PA", type: "2PA", description: "2PA" }, 22: { day: "G", activity: "2PA", type: "2PA", description: "2PA" }, 23: { day: "V", activity: "2PA", type: "2PA", description: "2PA" }, 26: { day: "L", activity: "2PB", type: "2PB", description: "2PB" }, 27: { day: "M", activity: "2PB", type: "2PB", description: "2PB" }, 28: { day: "M", activity: "2PB", type: "2PB", description: "2PB" }, 29: { day: "G", activity: "2PB", type: "2PB", description: "2PB" }, 30: { day: "V", activity: "2PB", type: "2PB", description: "2PB" } }, "2026-02": { 2: { day: "L", activity: "3A", type: "3A", description: "3A" }, 3: { day: "M", activity: "3A", type: "3A", description: "3A" }, 4: { day: "M", activity: "3A", type: "3A", description: "3A" }, 5: { day: "G", activity: "3A", type: "3A", description: "3A" }, 6: { day: "V", activity: "3A", type: "3A", description: "3A" }, 9: { day: "L", activity: "3B", type: "3B", description: "3B" }, 10: { day: "M", activity: "3B", type: "3B", description: "3B" }, 11: { day: "M", activity: "3B", type: "3B", description: "3B" }, 12: { day: "G", activity: "3B", type: "3B", description: "3B" }, 13: { day: "V", activity: "3B", type: "3B", description: "3B" }, 16: { day: "L", activity: "3C", type: "3C", description: "3C" }, 17: { day: "M", activity: "3C", type: "3C", description: "3C" }, 18: { day: "M", activity: "3C", type: "3C", description: "3C" }, 19: { day: "G", activity: "3C", type: "3C", description: "3C" }, 20: { day: "V", activity: "CARNEVALE", type: "CARNEVALE", description: "CARNEVALE" }, 21: { day: "S", activity: "CARNEVALE", type: "CARNEVALE", description: "CARNEVALE" }, 23: { day: "L", activity: "3D", type: "3D", description: "3D" }, 24: { day: "M", activity: "3D", type: "3D", description: "3D" }, 25: { day: "M", activity: "3D", type: "3D", description: "3D" }, 26: { day: "G", activity: "3D", type: "3D", description: "3D" }, 27: { day: "V", activity: "3D", type: "3D", description: "3D" } }, "2026-03": { 2: { day: "L", activity: "4PA", type: "4PA", description: "4PA" }, 3: { day: "M", activity: "4PA", type: "4PA", description: "4PA" }, 4: { day: "M", activity: "4PA", type: "4PA", description: "4PA" }, 5: { day: "G", activity: "4PA", type: "4PA", description: "4PA" }, 6: { day: "V", activity: "4PA", type: "4PA", description: "4PA" }, 9: { day: "L", activity: "4PB", type: "4PB", description: "4PB" }, 10: { day: "M", activity: "4PB", type: "4PB", description: "4PB" }, 11: { day: "M", activity: "4PB", type: "4PB", description: "4PB" }, 12: { day: "G", activity: "4PB", type: "4PB", description: "4PB" }, 13: { day: "V", activity: "4PB", type: "4PB", description: "4PB" }, 16: { day: "L", activity: "3PA", type: "3PA", description: "3PA" }, 17: { day: "M", activity: "3PA", type: "3PA", description: "3PA" }, 18: { day: "M", activity: "3PA", type: "3PA", description: "3PA" }, 19: { day: "G", activity: "3PA", type: "3PA", description: "3PA" }, 20: { day: "V", activity: "3PA", type: "3PA", description: "3PA" }, 23: { day: "L", activity: "3PB", type: "3PB", description: "3PB" }, 24: { day: "M", activity: "3PB", type: "3PB", description: "3PB" }, 25: { day: "M", activity: "3PB", type: "3PB", description: "3PB" }, 26: { day: "G", activity: "3PB", type: "3PB", description: "3PB" }, 27: { day: "V", activity: "3PB", type: "3PB", description: "3PB" }, 30: { day: "L", activity: "3PC", type: "3PC", description: "3PC" }, 31: { day: "M", activity: "3PC", type: "3PC", description: "3PC" } }, "2026-04": { 1: { day: "M", activity: "3PC", type: "3PC", description: "3PC" }, 2: { day: "G", activity: "VAC. PASQUALI", type: "VAC. PASQUALI", description: "VAC. PASQUALI" }, 3: { day: "V", activity: "VAC. PASQUALI", type: "VAC. PASQUALI", description: "VAC. PASQUALI" }, 4: { day: "S", activity: "VAC. PASQUALI", type: "VAC. PASQUALI", description: "VAC. PASQUALI" }, 5: { day: "D", activity: "VAC. PASQUALI", type: "VAC. PASQUALI", description: "VAC. PASQUALI" }, 6: { day: "L", activity: "VAC. PASQUALI", type: "VAC. PASQUALI", description: "VAC. PASQUALI" }, 7: { day: "M", activity: "VAC. PASQUALI", type: "VAC. PASQUALI", description: "VAC. PASQUALI" }, 8: { day: "M", activity: "3PC", type: "3PC", description: "3PC" }, 9: { day: "G", activity: "3PC", type: "3PC", description: "3PC" }, 10: { day: "V", activity: "3PC", type: "3PC", description: "3PC" }, 13: { day: "L", activity: "3A", type: "3A", description: "3A" }, 14: { day: "M", activity: "3A", type: "3A", description: "3A" }, 15: { day: "M", activity: "3A", type: "3A", description: "3A" }, 16: { day: "G", activity: "3A", type: "3A", description: "3A" }, 17: { day: "V", activity: "3A", type: "3A", description: "3A" }, 20: { day: "L", activity: "3B", type: "3B", description: "3B" }, 21: { day: "M", activity: "3B", type: "3B", description: "3B" }, 22: { day: "M", activity: "3B", type: "3B", description: "3B" }, 23: { day: "G", activity: "3B", type: "3B", description: "3B" }, 24: { day: "V", activity: "3B", type: "3B", description: "3B" }, 25: { day: "S", activity: "FESTA LIBERAZIONE", type: "FESTA LIBERAZIONE", description: "FESTA LIBERAZIONE" }, 27: { day: "L", activity: "3C", type: "3C", description: "3C" }, 28: { day: "M", activity: "3C", type: "3C", description: "3C" }, 29: { day: "M", activity: "3C", type: "3C", description: "3C" }, 30: { day: "G", activity: "3C", type: "3C", description: "3C" } }, "2026-05": { 1: { day: "V", activity: "F. Lavoratori", type: "F. Lavoratori", description: "F. Lavoratori" }, 4: { day: "L", activity: "3D", type: "3D", description: "3D" }, 5: { day: "M", activity: "3D", type: "3D", description: "3D" }, 6: { day: "M", activity: "3D", type: "3D", description: "3D" }, 7: { day: "G", activity: "3D", type: "3D", description: "3D" }, 8: { day: "V", activity: "S. Patrono", type: "S. Patrono", description: "S. Patrono" }, 11: { day: "L", activity: "2PA", type: "2PA", description: "2PA" }, 12: { day: "M", activity: "2PA", type: "2PA", description: "2PA" }, 13: { day: "M", activity: "2PA", type: "2PA", description: "2PA" }, 14: { day: "G", activity: "2PA", type: "2PA", description: "2PA" }, 15: { day: "V", activity: "2PA", type: "2PA", description: "2PA" }, 18: { day: "L", activity: "2PB", type: "2PB", description: "2PB" }, 19: { day: "M", activity: "2PB", type: "2PB", description: "2PB" }, 20: { day: "M", activity: "2PB", type: "2PB", description: "2PB" }, 21: { day: "G", activity: "2PB", type: "2PB", description: "2PB" }, 22: { day: "V", activity: "2PB", type: "2PB", description: "2PB" }, 25: { day: "L", activity: "2PA", type: "2PA", description: "2PA" }, 26: { day: "M", activity: "2PA", type: "2PA", description: "2PA" }, 27: { day: "M", activity: "2PA", type: "2PA", description: "2PA" }, 28: { day: "G", activity: "2PA", type: "2PA", description: "2PA" }, 29: { day: "V", activity: "2PA", type: "2PA", description: "2PA" } }, "2026-06": { 1: { day: "L", activity: "SOSPENSIONE DIDATTICA", type: "SOSPENSIONE DIDATTICA", description: "SOSPENSIONE DIDATTICA" }, 2: { day: "M", activity: "F. Repubblica", type: "F. Repubblica", description: "F. Repubblica" }, 3: { day: "M", activity: "2PB", type: "2PB", description: "2PB" }, 4: { day: "G", activity: "2PB", type: "2PB", description: "2PB" }, 5: { day: "V", activity: "2PB", type: "2PB", description: "2PB" }, 8: { day: "L", activity: "TERMINE DELLE LEZIONI", type: "TERMINE DELLE LEZIONI", description: "TERMINE DELLE LEZIONI" }, 9: { day: "M", activity: "INIZIO PCTO ESTIVO", type: "INIZIO PCTO ESTIVO", description: "INIZIO PCTO ESTIVO" }, 17: { day: "M", activity: "INIZIO ESAMI STATO", type: "INIZIO ESAMI STATO", description: "INIZIO ESAMI STATO" } } };
     
     const activityColors = {
       "3PA": "#FF6B6B","4PA": "#4ECDC4","3PB": "#45B7D1","4PB": "#96CEB4","3PC": "#FECA57","4PC": "#FF9FF3",
@@ -523,7 +313,7 @@
     };
 
     const months = ["Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre"];
-    const shortDays = ["Lun","Mar","Mer","Gio","Ven","Sab","Dom"];
+    const shortDays = ["Dom","Lun","Mar","Mer","Gio","Ven","Sab"];
     let currentMonth = 8;
     let currentYear = 2025;
     let currentWeek = 0;
@@ -553,7 +343,7 @@
 
       document.getElementById('monthTitle').textContent = `${months[currentMonth]} ${currentYear}`;
       let html = '';
-      const daysOfWeek = ["Dom","Lun","Mar","Mer","Gio","Ven","Sab"];
+      const daysOfWeek = ["Lun","Mar","Mer","Gio","Ven","Sab","Dom"];
       daysOfWeek.forEach(d => html += `<div class="month-day-header">${d}</div>`);
       
       const firstDayCorrected = (startDow === 0) ? 6 : startDow - 1;
@@ -597,7 +387,7 @@
             const day = new Date(weekStart);
             day.setDate(weekStart.getDate() + i);
             const monthKey = `${day.getFullYear()}-${String(day.getMonth() + 1).padStart(2, '0')}`;
-            const dayData = pctoData[monthKey] && pctoData[monthKey][day.getDate()];
+            const dayData = pctoData[monthKey] && pctoData[day.getFullYear() + '-' + String(day.getMonth() + 1).padStart(2, '0')][day.getDate()];
             const hasActivity = dayData ? 'has-activity' : '';
             const isToday = (day.getFullYear() === t.y && day.getMonth() === t.m && day.getDate() === t.d) ? 'today' : '';
             const color = dayData ? (activityColors[dayData.type] || '#667eea') : null;
@@ -750,7 +540,7 @@
                 const day = new Date(weekStart);
                 day.setDate(weekStart.getDate() + i);
                 const dayKey = `${day.getFullYear()}-${String(day.getMonth() + 1).padStart(2, '0')}`;
-                const dayData = pctoData[dayKey] && pctoData[dayKey][day.getDate()];
+                const dayData = pctoData[dayKey] && pctoData[day.getFullYear() + '-' + String(day.getMonth() + 1).padStart(2, '0')][day.getDate()];
                 if (dayData) {
                     eventsToExport[day.getDate()] = dayData;
                 }
