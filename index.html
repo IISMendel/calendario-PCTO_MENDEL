@@ -130,12 +130,144 @@
     .mini-day {
       background:#fff; border-radius:8px; display:flex; align-items:center; justify-content:center;
       font-size:.9rem; color:var(--text-primary); border:1px solid #eef2f7; min-height:32px;
-      transition:var(--transition); cursor:pointer;
+      transition:var(--transition); cursor:pointer; flex-direction:column; padding:2px;
     }
     .mini-day.muted { background:#f8f9fb; color:#b6c0c8; cursor:default; }
-    .mini-day.has-activity { background: var(--primary-color); color:#fff; font-weight:700; flex-direction:column; line-height:1.1; }
+    .mini-day.has-activity { background: var(--primary-color); color:#fff; font-weight:700; flex-direction:column; line-height:1.0; }
     .mini-day.today { outline:2px solid #FF1744; outline-offset:-2px; border-radius:8px; }
-    .mini-activity-text { font-size:.62rem; margin-top:2px; }
+    .mini-activity-text { 
+      font-size:.7rem; 
+      margin-top:1px; 
+      font-weight: 800;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+      letter-spacing: 0.02em;
+    }
+    
+    /* Enhanced class distinction in annual view */
+    .mini-day.has-activity .mini-activity-text {
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 2px 4px;
+      background: rgba(0,0,0,0.2);
+      border-radius: 4px;
+      margin-top: 2px;
+      display: block;
+      text-align: center;
+    }
+    
+    /* Filtered legend for multi-select */
+    .filtered-legend {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 16px;
+      border: 2px solid var(--primary-color);
+    }
+    
+    .filtered-legend h5 {
+      margin: 0 0 8px 0;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--primary-color);
+    }
+    
+    .filtered-legend-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    
+    .filtered-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: white;
+      padding: 4px 8px;
+      border-radius: 16px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    .filtered-legend-color {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+
+    /* Multi-Select Class Filter Styles */
+    .multi-class-filter {
+      background: rgba(255,255,255,0.95);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: var(--shadow-light);
+      margin-bottom: 16px;
+    }
+    .multi-class-filter h4 {
+      margin: 0 0 12px 0;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .class-checkboxes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .class-checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #f8f9fa;
+      padding: 6px 12px;
+      border-radius: 20px;
+      border: 2px solid transparent;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+    .class-checkbox-item:hover {
+      background: #e9ecef;
+    }
+    .class-checkbox-item.checked {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      border-color: var(--primary-color);
+    }
+    .class-checkbox {
+      margin: 0;
+      cursor: pointer;
+    }
+    .class-checkbox-label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      user-select: none;
+    }
+    .filter-controls {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      background: linear-gradient(135deg, var(--success-color), #38a169);
+      border: none;
+      color: white;
+      padding: 6px 14px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .filter-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+    .filter-btn.secondary {
+      background: linear-gradient(135deg, var(--text-secondary), #6c757d);
+    }
 
     /* Info/Legenda/Foot */
     .info-panel { margin-top:28px; display:grid; grid-template-columns: 2fr 1fr; gap:20px; }
@@ -244,7 +376,20 @@
 </div>
 <div class="content-section" id="annual">
 <div class="current-period" style="text-align:center; margin-bottom:18px;">Anno Scolastico 2025-2026</div>
-<div class="year-header" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:8px;"><div class="class-filter"><label for="classFilterYear">Filtra classe:</label><select class="action-button export-month" id="classFilterYear" onchange="onClassFilterChange(this)"></select></div></div><div class="year-grid" id="yearGrid"></div>
+
+<!-- Multi-Select Class Filter for Annual View -->
+<div class="multi-class-filter" id="multiClassFilter">
+  <h4>🎯 Seleziona Classi da Visualizzare:</h4>
+  <div class="class-checkboxes" id="classCheckboxes">
+    <!-- Checkboxes will be populated by JavaScript -->
+  </div>
+  <div class="filter-controls">
+    <button class="filter-btn" onclick="selectAllClasses()">Seleziona Tutte</button>
+    <button class="filter-btn secondary" onclick="deselectAllClasses()">Deseleziona Tutte</button>
+  </div>
+</div>
+
+<div class="year-grid" id="yearGrid"></div>
 <div style="text-align: center; margin-top: 20px;">
 <button class="action-button export-year" onclick="exportCalendarToIcs('year')">
 <svg class="feather feather-download" fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" x2="12" y1="15" y2="3"></line></svg>
@@ -298,6 +443,9 @@
 <li>In quella pagina, clicca su **"Seleziona un file dal computer"** e scegli il file .ics appena scaricato.</li>
 <li>Scegli in quale calendario vuoi importare gli eventi e clicca su **"Importa"**.</li>
 </ol>
+</p>
+<p>
+<strong>Novità Vista Annuale:</strong> Nella vista annuale puoi ora selezionare più classi contemporaneamente utilizzando le checkbox. Usa i pulsanti "Seleziona Tutte" e "Deseleziona Tutte" per una gestione rapida della visualizzazione.
 </p>
 </div>
 </div>
@@ -411,6 +559,10 @@ if (typeof applyClassFilter==='function') applyClassFilter();}
       for(let m=8;m<12;m++){ html += miniMonthHTML(m, 2025); }
       for(let m=0;m<6;m++){ html += miniMonthHTML(m, 2026); }
       yearGrid.innerHTML = html;
+      
+      // Initialize multi-select filter after generating the annual view
+      initializeMultiSelectFilter();
+      applyMultiClassFilter();
     }
 
     function miniMonthHTML(month, year){
@@ -607,7 +759,7 @@ PRODID:-//PCTO Calendar//NONSGML v1.0//EN
       generateLegend();
     });
   
-// --- Filtro classe (singola) ---
+// --- Filtro classe (singola per vista mensile) ---
 var currentClassFilter = "";
 
 function isClassCode(t){
@@ -658,6 +810,129 @@ function onClassFilterChange(sel){
     if (el && el!==sel) el.value = currentClassFilter;
   });
   applyClassFilter();
+}
+
+// --- Multi-Select Filter for Annual View ---
+let selectedClasses = new Set();
+
+function initializeMultiSelectFilter() {
+  const container = document.getElementById('classCheckboxes');
+  if (!container) return;
+  
+  const classes = collectClasses();
+  container.innerHTML = '';
+  
+  classes.forEach(className => {
+    const item = document.createElement('div');
+    item.className = 'class-checkbox-item';
+    item.onclick = () => toggleClass(className, item);
+    
+    item.innerHTML = `
+      <input type="checkbox" class="class-checkbox" id="checkbox-${className}" ${selectedClasses.has(className) ? 'checked' : ''}>
+      <label for="checkbox-${className}" class="class-checkbox-label">${className}</label>
+    `;
+    
+    if (selectedClasses.has(className)) {
+      item.classList.add('checked');
+    }
+    
+    container.appendChild(item);
+  });
+  
+  // If no classes are selected initially, select all
+  if (selectedClasses.size === 0) {
+    selectAllClasses();
+  }
+}
+
+function toggleClass(className, itemElement) {
+  const checkbox = itemElement.querySelector('input[type="checkbox"]');
+  
+  if (selectedClasses.has(className)) {
+    selectedClasses.delete(className);
+    checkbox.checked = false;
+    itemElement.classList.remove('checked');
+  } else {
+    selectedClasses.add(className);
+    checkbox.checked = true;
+    itemElement.classList.add('checked');
+  }
+  
+  applyMultiClassFilter();
+}
+
+function selectAllClasses() {
+  const classes = collectClasses();
+  selectedClasses.clear();
+  classes.forEach(c => selectedClasses.add(c));
+  
+  document.querySelectorAll('.class-checkbox-item').forEach(item => {
+    item.classList.add('checked');
+    item.querySelector('input[type="checkbox"]').checked = true;
+  });
+  
+  applyMultiClassFilter();
+}
+
+function deselectAllClasses() {
+  selectedClasses.clear();
+  
+  document.querySelectorAll('.class-checkbox-item').forEach(item => {
+    item.classList.remove('checked');
+    item.querySelector('input[type="checkbox"]').checked = false;
+  });
+  
+  applyMultiClassFilter();
+}
+
+function applyMultiClassFilter() {
+  // Only apply multi-class filter in annual view
+  if (!document.getElementById('annual').classList.contains('active')) {
+    return;
+  }
+  
+  document.querySelectorAll('.activity-tag').forEach(tag => {
+    const activityType = (tag.getAttribute('data-type') || "").toUpperCase();
+    const dayContainer = tag.closest('.mini-day');
+    
+    if (!dayContainer) return;
+    
+    // Ripristino di sicurezza per l'etichetta
+    tag.style.display = '';
+    
+    // Show if no classes are selected (show all) or if the activity type is in selected classes
+    const shouldShow = selectedClasses.size === 0 || selectedClasses.has(activityType);
+    
+    if (shouldShow) {
+      dayContainer.style.display = '';
+      tag.style.display = ''; // FIX: ripristina etichetta quando visibile
+      // If the day has activity, make sure it's styled properly
+      if (isClassCode(activityType)) {
+        dayContainer.classList.add('has-activity');
+        const color = activityColors[activityType] || '#667eea';
+        dayContainer.style.background = color;
+        dayContainer.style.color = '#fff';
+      }
+    } else {
+      // Hide the activity but keep the day visible with default styling
+      dayContainer.classList.remove('has-activity');
+      dayContainer.style.background = '#fff';
+      dayContainer.style.color = 'var(--text-primary)';
+      tag.style.display = 'none';
+    }
+  });
+  
+  // Handle days that have no activity tags but should be visible
+  document.querySelectorAll('.mini-day:not(.muted)').forEach(day => {
+    const activityTag = day.querySelector('.activity-tag');
+    if (!activityTag) {
+      // This day has no activities, always show it with default styling
+      day.style.display = '';
+      day.classList.remove('has-activity');
+      day.style.background = '#fff';
+      day.style.color = 'var(--text-primary)';
+    }
+  });
 }
 </script>
 <script>document.addEventListener('DOMContentLoaded', function(){ if (typeof populateClassFilter==='function'){ populateClassFilter('classFilterMonth'); populateClassFilter('classFilterYear'); } });</script></body>
