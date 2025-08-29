@@ -220,7 +220,7 @@
 <button class="nav-button" onclick="previousMonth()">‹</button>
 <div class="current-period" id="monthTitle">Settembre 2025</div>
 <button class="nav-button" onclick="nextMonth()">›</button>
-</div>
+</div><div class="class-filter"><label for="classFilterMonth">Filtra classe:</label><select class="action-button export-month" id="classFilterMonth" onchange="onClassFilterChange(this)"></select></div>
 <div class="flex gap-2"><a class="action-button export-month" href="https://agrariomendel.edu.it/allegati/all/4998-piano-pcto-2025-2026.pdf" rel="noopener" target="_blank">Scarica PDF</a></div><button class="action-button export-month" onclick="exportCalendarToIcs('month')">
 <svg class="feather feather-download" fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" x2="12" y1="15" y2="3"></line></svg>
               Esporta il mese
@@ -244,7 +244,7 @@
 </div>
 <div class="content-section" id="annual">
 <div class="current-period" style="text-align:center; margin-bottom:18px;">Anno Scolastico 2025-2026</div>
-<div class="year-grid" id="yearGrid"></div>
+<div class="year-header" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:8px;"><div class="class-filter"><label for="classFilterYear">Filtra classe:</label><select class="action-button export-month" id="classFilterYear" onchange="onClassFilterChange(this)"></select></div></div><div class="year-grid" id="yearGrid"></div>
 <div style="text-align: center; margin-top: 20px;">
 <button class="action-button export-year" onclick="exportCalendarToIcs('year')">
 <svg class="feather feather-download" fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" x2="12" y1="15" y2="3"></line></svg>
@@ -356,7 +356,7 @@
         const has = data ? 'has-activity' : '';
         const isToday = (currentYear===t.y && currentMonth===t.m && d===t.d) ? 'today' : '';
         const color = data ? (activityColors[data.type]||'#667eea') : null;
-        const activityTag = data ? `<div class="activity-tag" style="background:${color}">${data.type}</div>` : '';
+        const activityTag = data ? `<div class="activity-tag" data-type="${data.type}" style="background:${color}">${data.type}</div>` : '';
 
         html += `<div class="month-day ${has} ${isToday}" onclick="selectDay('${monthKey}', ${d})">`+
                   `<div class="day-number">${d}</div>`+
@@ -364,7 +364,11 @@
                 `</div>`;
       }
       document.getElementById('monthGrid').innerHTML = html;
-    }
+    
+
+if (typeof populateClassFilter==='function') populateClassFilter('classFilterMonth');
+if (typeof applyClassFilter==='function') applyClassFilter();if (typeof populateClassFilter==='function') populateClassFilter('classFilterMonth');
+if (typeof applyClassFilter==='function') applyClassFilter();}
 
     function generateWeeklyView(){
         let html = '';
@@ -430,7 +434,7 @@
         const has = data ? 'has-activity' : '';
         const isToday = (isCurrent && d===t.d) ? 'today' : '';
         const color = data ? (activityColors[data.type]||'#667eea') : null;
-        const activityTag = data ? `<div class="mini-activity-text">${data.type}</div>` : '';
+        const activityTag = data ? `<div class="mini-activity-text activity-tag" data-type="${data.type}">${data.type}</div>` : '';
 
         html += `<div class="mini-day ${has} ${isToday}" ${color?`style="background:${color}"`:''} title="${data?data.activity:''}" onclick="selectDay('${monthKey}',${d})">`+
                   `${d}${activityTag}`+
@@ -552,7 +556,10 @@
             return;
         }
 
-        let icsContent = `BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//PCTO Calendar//NONSGML v1.0//EN\n`;
+        let icsContent = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//PCTO Calendar//NONSGML v1.0//EN
+`;
 
         for (const day in eventsToExport) {
             const event = eventsToExport[day];
@@ -563,13 +570,20 @@
                 const date = new Date(currentYear, currentMonth, parseInt(day));
                 const isoDate = `${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}`;
                 
-                icsContent += `BEGIN:VEVENT\n`;
-                icsContent += `UID:${isoDate}-${event.activity}@iismendel.edu.it\n`;
-                icsContent += `DTSTART;VALUE=DATE:${isoDate}\n`;
-                icsContent += `DTEND;VALUE=DATE:${isoDate}\n`; 
-                icsContent += `SUMMARY:PCTO - ${event.activity}\n`;
-                icsContent += `DESCRIPTION:${event.description}\n`;
-                icsContent += `END:VEVENT\n`;
+                icsContent += `BEGIN:VEVENT
+`;
+                icsContent += `UID:${isoDate}-${event.activity}@iismendel.edu.it
+`;
+                icsContent += `DTSTART;VALUE=DATE:${isoDate}
+`;
+                icsContent += `DTEND;VALUE=DATE:${isoDate}
+`; 
+                icsContent += `SUMMARY:PCTO - ${event.activity}
+`;
+                icsContent += `DESCRIPTION:${event.description}
+`;
+                icsContent += `END:VEVENT
+`;
             }
         }
         icsContent += `END:VCALENDAR`;
@@ -592,6 +606,59 @@
       generateMonthlyView();
       generateLegend();
     });
-  </script>
-</body>
+  
+// --- Filtro classe (singola) ---
+var currentClassFilter = "";
+
+function isClassCode(t){
+  return /^[1-5](PA|PB|PC|PD|A|B|C|D)$/.test((t||"").toUpperCase());
+}
+
+function collectClasses(){
+  const classes = new Set();
+  for (const month in pctoData){
+    for (const day in pctoData[month]){
+      const t = (pctoData[month][day].type||"").toUpperCase();
+      if (isClassCode(t)) classes.add(t);
+    }
+  }
+  return Array.from(classes).sort();
+}
+
+function populateClassFilter(selectId){
+  const sel = document.getElementById(selectId);
+  if (!sel) return;
+  // reset options (keep "Tutte" if present)
+  while (sel.options.length > 0) sel.remove(0);
+  const optAll = document.createElement('option');
+  optAll.value = ""; optAll.textContent = "Tutte";
+  sel.appendChild(optAll);
+  collectClasses().forEach(c => {
+    const o = document.createElement('option');
+    o.value = c; o.textContent = c; sel.appendChild(o);
+  });
+  sel.value = currentClassFilter || "";
+}
+
+function applyClassFilter(){
+  const cls = (currentClassFilter||"").toUpperCase();
+  document.querySelectorAll('.activity-tag').forEach(tag => {
+    const t = (tag.getAttribute('data-type')||"").toUpperCase();
+    const holder = tag.parentElement; // container of the tag inside the day cell/annual cell
+    if (!holder) return;
+    holder.style.display = (!cls || t===cls) ? "" : "none";
+  });
+}
+
+function onClassFilterChange(sel){
+  currentClassFilter = (sel.value||"").toUpperCase();
+  // sync other filters if present
+  ['classFilterMonth','classFilterYear'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el!==sel) el.value = currentClassFilter;
+  });
+  applyClassFilter();
+}
+</script>
+<script>document.addEventListener('DOMContentLoaded', function(){ if (typeof populateClassFilter==='function'){ populateClassFilter('classFilterMonth'); populateClassFilter('classFilterYear'); } });</script></body>
 </html>
