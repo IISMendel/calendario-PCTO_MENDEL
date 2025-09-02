@@ -269,14 +269,72 @@
       background: linear-gradient(135deg, var(--text-secondary), #6c757d);
     }
 
-    /* Info/Legenda/Foot */
-    .info-panel { margin-top:28px; display:grid; grid-template-columns: 2fr 1fr; gap:20px; }
-    @media (max-width: 1000px){ .info-panel { grid-template-columns:1fr; } }
-    .legend-section, .activity-details { background: rgba(255,255,255,0.92); border-radius: var(--border-radius); padding:20px; box-shadow: var(--shadow-light); }
-    .legend-title { font-size:1.2rem; font-weight:800; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
-    .legend-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap:12px; }
-    .legend-item { display:flex; align-items:center; gap:10px; padding:8px; background:#fff; border-radius:8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-    .legend-color { width:18px; height:18px; border-radius:50%; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    /* Google Calendar Direct Export Styles */
+    .google-calendar-export {
+      background: rgba(255,255,255,0.95);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: var(--shadow-light);
+      margin-bottom: 16px;
+    }
+    .google-calendar-export h4 {
+      margin: 0 0 12px 0;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .class-selector {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .class-select {
+      padding: 8px 12px;
+      border: 2px solid var(--light-color);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      background: white;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .class-select:focus {
+      outline: none;
+      border-color: var(--primary-color);
+    }
+    .export-to-gcal-btn {
+      background: #4285F4;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .export-to-gcal-btn:hover {
+      background: #3367d6;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+    .export-to-gcal-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Info/Foot */
+    .info-panel { margin-top:28px; display:grid; grid-template-columns: 1fr; gap:20px; }
+    .activity-details { background: rgba(255,255,255,0.92); border-radius: var(--border-radius); padding:20px; box-shadow: var(--shadow-light); }
     .activity-summary { background: linear-gradient(135deg, var(--accent-color), var(--success-color));
       color:#fff; padding:16px; border-radius:10px; margin-bottom:12px; }
       
@@ -332,7 +390,8 @@
     display: none !important;
   }
 }
-</style></head>
+</style>
+</head>
 <body>
 <div class="main-container">
 <div class="dashboard-header">
@@ -352,14 +411,17 @@
 <button class="nav-button" onclick="previousMonth()">‹</button>
 <div class="current-period" id="monthTitle">Settembre 2025</div>
 <button class="nav-button" onclick="nextMonth()">›</button>
-</div><div class="class-filter"><label for="classFilterMonth">Filtra classe:</label><select class="action-button export-month" id="classFilterMonth" onchange="onClassFilterChange(this)"></select></div>
-<div class="flex gap-2"><a class="action-button export-month" href="https://agrariomendel.edu.it/allegati/all/4998-piano-pcto-2025-2026.pdf" rel="noopener" target="_blank">Scarica PDF</a></div><button class="action-button export-month" onclick="exportCalendarToIcs('month')">
+</div>
+<div class="class-filter"><label for="classFilterMonth">Filtra classe:</label><select class="action-button export-month" id="classFilterMonth" onchange="onClassFilterChange(this)"></select></div>
+<div class="flex gap-2"><a class="action-button export-month" href="https://agrariomendel.edu.it/allegati/all/4998-piano-pcto-2025-2026.pdf" rel="noopener" target="_blank">Scarica PDF</a></div>
+<button class="action-button export-month" onclick="exportCalendarToIcs('month')">
 <svg class="feather feather-download" fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" x2="12" y1="15" y2="3"></line></svg>
               Esporta il mese
             </button>
 </div>
 <div class="month-grid" id="monthGrid"></div>
 </div>
+
 <div class="content-section" id="weekly">
 <div class="week-header">
 <div class="nav-buttons-group">
@@ -374,8 +436,28 @@
 </div>
 <div class="week-grid" id="weekGrid"></div>
 </div>
+
 <div class="content-section" id="annual">
 <div class="current-period" style="text-align:center; margin-bottom:18px;">Anno Scolastico 2025-2026</div>
+
+<!-- Google Calendar Direct Export -->
+<div class="google-calendar-export">
+  <h4>📅 Invia Calendario Classe a Google Calendar</h4>
+  <p style="margin: 0 0 12px 0; color: var(--text-secondary); font-size: 0.9rem;">
+    Seleziona una classe e invia tutti i suoi eventi direttamente a Google Calendar con un solo clic.
+  </p>
+  <div class="class-selector">
+    <select class="class-select" id="classDirectExport">
+      <option value="">Seleziona una classe...</option>
+    </select>
+    <button class="export-to-gcal-btn" onclick="exportClassToGoogleCalendar()" id="exportClassBtn" disabled>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
+      </svg>
+      Invia a Google Calendar
+    </button>
+  </div>
+</div>
 
 <!-- Multi-Select Class Filter for Annual View -->
 <div class="multi-class-filter" id="multiClassFilter">
@@ -399,16 +481,8 @@
 </div>
 </div>
 </div>
+
 <div class="info-panel">
-<div class="legend-section">
-<div class="legend-title">🎯 Legenda Attività PCTO</div>
-<div class="legend-grid" id="legendContainer"></div>
-<div style="text-align: center; margin-top: 20px;">
-<button class="action-button print" onclick="window.print()">
-            🖨️ Stampa
-          </button>
-</div>
-</div>
 <div class="activity-details">
 <div class="activity-summary">
 <h4>📋 Attività Corrente</h4>
@@ -419,16 +493,26 @@
 </div>
 <div class="button-container" id="calendarButtons">
 </div>
+<div style="text-align: center; margin-top: 20px;">
+<button class="action-button print" onclick="window.print()">
+            🖨️ Stampa
+          </button>
 </div>
 </div>
+</div>
+
 <div class="school-footer">
 <div class="footer-title">Pagina creata dal Team Buone Pratiche dell'IIS MENDEL</div>
 <div class="footer-address">Via Ferrazzi 15 - 20035 Villa Cortese (MI)</div>
 </div>
+
 <div id="instructions" style="background:#fff; border-radius:16px; padding:20px; margin-top:20px; box-shadow:var(--shadow-light);">
 <h3>Guida per l'esportazione e la sincronizzazione del calendario</h3>
-<p>Il calendario offre 3 opzioni per sincronizzare le attività con il tuo calendario personale:</p>
+<p>Il calendario offre diverse opzioni per sincronizzare le attività con il tuo calendario personale:</p>
 <ol>
+<li>
+<strong>📅 Invia Calendario Classe (NUOVO!):</strong> Nella vista annuale, seleziona una classe dal menu a discesa e clicca "Invia a Google Calendar" per aggiungere automaticamente tutti gli eventi della classe selezionata al tuo calendario Google.
+        </li>
 <li>
 <strong>Esportare un'attività singola:</strong> Clicca su un giorno del calendario con un evento. Apparirà un pulsante che ti permetterà di aggiungere quell'attività specifica al tuo calendario in un solo passaggio.
         </li>
@@ -449,6 +533,7 @@
 </p>
 </div>
 </div>
+
 <script>
     const pctoData = { "2025-09": { 1: { day: "L", activity: "Inizio attività ordinaria", type: "Inizio attività ordinaria", description: "Inizio attività ordinaria" }, 12: { day: "V", activity: "INIZIO LEZIONI", type: "INIZIO LEZIONI", description: "INIZIO LEZIONI" }, 15: { day: "L", activity: "4PA", type: "4PA", description: "4PA" }, 16: { day: "M", activity: "4PA", type: "4PA", description: "4PA" }, 17: { day: "M", activity: "4PA", type: "4PA", description: "4PA" }, 18: { day: "G", activity: "4PA", type: "4PA", description: "4PA" }, 19: { day: "V", activity: "4PA", type: "4PA", description: "4PA" }, 22: { day: "L", activity: "4PB", type: "4PB", description: "4PB" }, 23: { day: "M", activity: "4PB", type: "4PB", description: "4PB" }, 24: { day: "M", activity: "4PB", type: "4PB", description: "4PB" }, 25: { day: "G", activity: "4PB", type: "4PB", description: "4PB" }, 26: { day: "V", activity: "4PB", type: "4PB", description: "4PB" }, 29: { day: "L", activity: "3PA", type: "3PA", description: "3PA" }, 30: { day: "M", activity: "3PA", type: "3PA", description: "3PA" } }, "2025-10": { 1: { day: "M", activity: "3PA", type: "3PA", description: "3PA" }, 2: { day: "G", activity: "3PA", type: "3PA", description: "3PA" }, 3: { day: "V", activity: "3PA", type: "3PA", description: "3PA" }, 6: { day: "L", activity: "3PB", type: "3PB", description: "3PB" }, 7: { day: "M", activity: "3PB", type: "3PB", description: "3PB" }, 8: { day: "M", activity: "3PB", type: "3PB", description: "3PB" }, 9: { day: "G", activity: "3PB", type: "3PB", description: "3PB" }, 10: { day: "V", activity: "3PB", type: "3PB", description: "3PB" }, 13: { day: "L", activity: "3PC", type: "3PC", description: "3PC" }, 14: { day: "M", activity: "3PC", type: "3PC", description: "3PC" }, 15: { day: "M", activity: "3PC", type: "3PC", description: "3PC" }, 16: { day: "G", activity: "3PC", type: "3PC", description: "3PC" }, 17: { day: "V", activity: "3PC", type: "3PC", description: "3PC" }, 20: { day: "L", activity: "4A", type: "4A", description: "4A" }, 21: { day: "M", activity: "4A", type: "4A", description: "4A" }, 22: { day: "M", activity: "4A", type: "4A", description: "4A" }, 23: { day: "G", activity: "4A", type: "4A", description: "4A" }, 24: { day: "V", activity: "4A", type: "4A", description: "4A" }, 27: { day: "L", activity: "4B", type: "4B", description: "4B" }, 28: { day: "M", activity: "4B", type: "4B", description: "4B" }, 29: { day: "M", activity: "4B", type: "4B", description: "4B" }, 30: { day: "G", activity: "4B", type: "4B", description: "4B" }, 31: { day: "V", activity: "SOSPENSIONE DIDATTICA", type: "SOSPENSIONE DIDATTICA", description: "SOSPENSIONE DIDATTICA" } }, "2025-11": { 1: { day: "S", activity: "Ognissanti", type: "Ognissanti", description: "Ognissanti" }, 3: { day: "L", activity: "4C", type: "4C", description: "4C" }, 4: { day: "M", activity: "4C", type: "4C", description: "4C" }, 5: { day: "M", activity: "4C", type: "4C", description: "4C" }, 6: { day: "G", activity: "4C", type: "4C", description: "4C" }, 7: { day: "V", activity: "4C", type: "4C", description: "4C" }, 10: { day: "L", activity: "4D", type: "4D", description: "4D" }, 11: { day: "M", activity: "4D", type: "4D", description: "4D" }, 12: { day: "M", activity: "4D", type: "4D", description: "4D" }, 13: { day: "G", activity: "4D", type: "4D", description: "4D" }, 14: { day: "V", activity: "4D", type: "4D", description: "4D" }, 17: { day: "L", activity: "4PA", type: "4PA", description: "4PA" }, 18: { day: "M", activity: "4PA", type: "4PA", description: "4PA" }, 19: { day: "M", activity: "4PA", type: "4PA", description: "4PA" }, 20: { day: "G", activity: "4PA", type: "4PA", description: "4PA" }, 21: { day: "V", activity: "4PA", type: "4PA", description: "4PA" }, 24: { day: "L", activity: "4PB", type: "4PB", description: "4PB" }, 25: { day: "M", activity: "4PB", type: "4PB", description: "4PB" }, 26: { day: "M", activity: "4PB", type: "4PB", description: "4PB" }, 27: { day: "G", activity: "4PB", type: "4PB", description: "4PB" }, 28: { day: "V", activity: "4PB", type: "4PB", description: "4PB" } }, "2025-12": { 1: { day: "L", activity: "3PA", type: "3PA", description: "3PA" }, 2: { day: "M", activity: "3PA", type: "3PA", description: "3PA" }, 3: { day: "M", activity: "3PA", type: "3PA", description: "3PA" }, 4: { day: "G", activity: "3PA", type: "3PA", description: "3PA" }, 5: { day: "V", activity: "3PA", type: "3PA", description: "3PA" }, 8: { day: "L", activity: "Immacolata", type: "Immacolata", description: "Immacolata" }, 9: { day: "M", activity: "3PB", type: "3PB", description: "3PB" }, 10: { day: "M", activity: "3PB", type: "3PB", description: "3PB" }, 11: { day: "G", activity: "3PB", type: "3PB", description: "3PB" }, 12: { day: "V", activity: "3PB", type: "3PB", description: "3PB" }, 15: { day: "L", activity: "3PC", type: "3PC", description: "3PC" }, 16: { day: "M", activity: "3PC", type: "3PC", description: "3PC" }, 17: { day: "M", activity: "3PC", type: "3PC", description: "3PC" }, 18: { day: "G", activity: "3PC", type: "3PC", description: "3PC" }, 19: { day: "V", activity: "3PC", type: "3PC", description: "3PC" }, 22: { day: "L", activity: "SOSPENSIONE DIDATTICA", type: "SOSPENSIONE DIDATTICA", description: "SOSPENSIONE DIDATTICA" }, 23: { day: "M", activity: "inizio vacanze di Natale", type: "inizio vacanze di Natale", description: "inizio vacanze di Natale" }, 25: { day: "G", activity: "SS. Natale", type: "SS. Natale", description: "SS. Natale" } }, "2026-01": { 6: { day: "M", activity: "Fine Vac. Natatale", type: "Fine Vac. Natatale", description: "Fine Vac. Natatale" }, 7: { day: "M", activity: "SOSPENSIONE PCTO", type: "SOSPENSIONE PCTO", description: "SOSPENSIONE PCTO" }, 16: { day: "V", activity: "FINE 1Q", type: "FINE 1Q", description: "FINE 1Q" }, 19: { day: "L", activity: "2PA", type: "2PA", description: "2PA" }, 20: { day: "M", activity: "2PA", type: "2PA", description: "2PA" }, 21: { day: "M", activity: "2PA", type: "2PA", description: "2PA" }, 22: { day: "G", activity: "2PA", type: "2PA", description: "2PA" }, 23: { day: "V", activity: "2PA", type: "2PA", description: "2PA" }, 26: { day: "L", activity: "2PB", type: "2PB", description: "2PB" }, 27: { day: "M", activity: "2PB", type: "2PB", description: "2PB" }, 28: { day: "M", activity: "2PB", type: "2PB", description: "2PB" }, 29: { day: "G", activity: "2PB", type: "2PB", description: "2PB" }, 30: { day: "V", activity: "2PB", type: "2PB", description: "2PB" } }, "2026-02": { 2: { day: "L", activity: "3A", type: "3A", description: "3A" }, 3: { day: "M", activity: "3A", type: "3A", description: "3A" }, 4: { day: "M", activity: "3A", type: "3A", description: "3A" }, 5: { day: "G", activity: "3A", type: "3A", description: "3A" }, 6: { day: "V", activity: "3A", type: "3A", description: "3A" }, 9: { day: "L", activity: "3B", type: "3B", description: "3B" }, 10: { day: "M", activity: "3B", type: "3B", description: "3B" }, 11: { day: "M", activity: "3B", type: "3B", description: "3B" }, 12: { day: "G", activity: "3B", type: "3B", description: "3B" }, 13: { day: "V", activity: "3B", type: "3B", description: "3B" }, 16: { day: "L", activity: "3C", type: "3C", description: "3C" }, 17: { day: "M", activity: "3C", type: "3C", description: "3C" }, 18: { day: "M", activity: "3C", type: "3C", description: "3C" }, 19: { day: "G", activity: "3C", type: "3C", description: "3C" }, 20: { day: "V", activity: "CARNEVALE", type: "CARNEVALE", description: "CARNEVALE" }, 21: { day: "S", activity: "CARNEVALE", type: "CARNEVALE", description: "CARNEVALE" }, 23: { day: "L", activity: "3D", type: "3D", description: "3D" }, 24: { day: "M", activity: "3D", type: "3D", description: "3D" }, 25: { day: "M", activity: "3D", type: "3D", description: "3D" }, 26: { day: "G", activity: "3D", type: "3D", description: "3D" }, 27: { day: "V", activity: "3D", type: "3D", description: "3D" } }, "2026-03": { 2: { day: "L", activity: "4PA", type: "4PA", description: "4PA" }, 3: { day: "M", activity: "4PA", type: "4PA", description: "4PA" }, 4: { day: "M", activity: "4PA", type: "4PA", description: "4PA" }, 5: { day: "G", activity: "4PA", type: "4PA", description: "4PA" }, 6: { day: "V", activity: "4PA", type: "4PA", description: "4PA" }, 9: { day: "L", activity: "4PB", type: "4PB", description: "4PB" }, 10: { day: "M", activity: "4PB", type: "4PB", description: "4PB" }, 11: { day: "M", activity: "4PB", type: "4PB", description: "4PB" }, 12: { day: "G", activity: "4PB", type: "4PB", description: "4PB" }, 13: { day: "V", activity: "4PB", type: "4PB", description: "4PB" }, 16: { day: "L", activity: "3PA", type: "3PA", description: "3PA" }, 17: { day: "M", activity: "3PA", type: "3PA", description: "3PA" }, 18: { day: "M", activity: "3PA", type: "3PA", description: "3PA" }, 19: { day: "G", activity: "3PA", type: "3PA", description: "3PA" }, 20: { day: "V", activity: "3PA", type: "3PA", description: "3PA" }, 23: { day: "L", activity: "3PB", type: "3PB", description: "3PB" }, 24: { day: "M", activity: "3PB", type: "3PB", description: "3PB" }, 25: { day: "M", activity: "3PB", type: "3PB", description: "3PB" }, 26: { day: "G", activity: "3PB", type: "3PB", description: "3PB" }, 27: { day: "V", activity: "3PB", type: "3PB", description: "3PB" }, 30: { day: "L", activity: "3PC", type: "3PC", description: "3PC" }, 31: { day: "M", activity: "3PC", type: "3PC", description: "3PC" } }, "2026-04": { 1: { day: "M", activity: "3PC", type: "3PC", description: "3PC" }, 2: { day: "G", activity: "VAC. PASQUALI", type: "VAC. PASQUALI", description: "VAC. PASQUALI" }, 3: { day: "V", activity: "VAC. PASQUALI", type: "VAC. PASQUALI", description: "VAC. PASQUALI" }, 4: { day: "S", activity: "VAC. PASQUALI", type: "VAC. PASQUALI", description: "VAC. PASQUALI" }, 5: { day: "D", activity: "VAC. PASQUALI", type: "VAC. PASQUALI", description: "VAC. PASQUALI" }, 6: { day: "L", activity: "VAC. PASQUALI", type: "VAC. PASQUALI", description: "VAC. PASQUALI" }, 7: { day: "M", activity: "VAC. PASQUALI", type: "VAC. PASQUALI", description: "VAC. PASQUALI" }, 8: { day: "M", activity: "3PC", type: "3PC", description: "3PC" }, 9: { day: "G", activity: "3PC", type: "3PC", description: "3PC" }, 10: { day: "V", activity: "3PC", type: "3PC", description: "3PC" }, 13: { day: "L", activity: "3A", type: "3A", description: "3A" }, 14: { day: "M", activity: "3A", type: "3A", description: "3A" }, 15: { day: "M", activity: "3A", type: "3A", description: "3A" }, 16: { day: "G", activity: "3A", type: "3A", description: "3A" }, 17: { day: "V", activity: "3A", type: "3A", description: "3A" }, 20: { day: "L", activity: "3B", type: "3B", description: "3B" }, 21: { day: "M", activity: "3B", type: "3B", description: "3B" }, 22: { day: "M", activity: "3B", type: "3B", description: "3B" }, 23: { day: "G", activity: "3B", type: "3B", description: "3B" }, 24: { day: "V", activity: "3B", type: "3B", description: "3B" }, 25: { day: "S", activity: "FESTA LIBERAZIONE", type: "FESTA LIBERAZIONE", description: "FESTA LIBERAZIONE" }, 27: { day: "L", activity: "3C", type: "3C", description: "3C" }, 28: { day: "M", activity: "3C", type: "3C", description: "3C" }, 29: { day: "M", activity: "3C", type: "3C", description: "3C" }, 30: { day: "G", activity: "3C", type: "3C", description: "3C" } }, "2026-05": { 1: { day: "V", activity: "F. Lavoratori", type: "F. Lavoratori", description: "F. Lavoratori" }, 4: { day: "L", activity: "3D", type: "3D", description: "3D" }, 5: { day: "M", activity: "3D", type: "3D", description: "3D" }, 6: { day: "M", activity: "3D", type: "3D", description: "3D" }, 7: { day: "G", activity: "3D", type: "3D", description: "3D" }, 8: { day: "V", activity: "S. Patrono", type: "S. Patrono", description: "S. Patrono" }, 11: { day: "L", activity: "2PA", type: "2PA", description: "2PA" }, 12: { day: "M", activity: "2PA", type: "2PA", description: "2PA" }, 13: { day: "M", activity: "2PA", type: "2PA", description: "2PA" }, 14: { day: "G", activity: "2PA", type: "2PA", description: "2PA" }, 15: { day: "V", activity: "2PA", type: "2PA", description: "2PA" }, 18: { day: "L", activity: "2PB", type: "2PB", description: "2PB" }, 19: { day: "M", activity: "2PB", type: "2PB", description: "2PB" }, 20: { day: "M", activity: "2PB", type: "2PB", description: "2PB" }, 21: { day: "G", activity: "2PB", type: "2PB", description: "2PB" }, 22: { day: "V", activity: "2PB", type: "2PB", description: "2PB" }, 25: { day: "L", activity: "2PA", type: "2PA", description: "2PA" }, 26: { day: "M", activity: "2PA", type: "2PA", description: "2PA" }, 27: { day: "M", activity: "2PA", type: "2PA", description: "2PA" }, 28: { day: "G", activity: "2PA", type: "2PA", description: "2PA" }, 29: { day: "V", activity: "2PA", type: "2PA", description: "2PA" } }, "2026-06": { 1: { day: "L", activity: "SOSPENSIONE DIDATTICA", type: "SOSPENSIONE DIDATTICA", description: "SOSPENSIONE DIDATTICA" }, 2: { day: "M", activity: "F. Repubblica", type: "F. Repubblica", description: "F. Repubblica" }, 3: { day: "M", activity: "2PB", type: "2PB", description: "2PB" }, 4: { day: "G", activity: "2PB", type: "2PB", description: "2PB" }, 5: { day: "V", activity: "2PB", type: "2PB", description: "2PB" }, 8: { day: "L", activity: "TERMINE DELLE LEZIONI", type: "TERMINE DELLE LEZIONI", description: "TERMINE DELLE LEZIONI" }, 9: { day: "M", activity: "INIZIO PCTO ESTIVO", type: "INIZIO PCTO ESTIVO", description: "INIZIO PCTO ESTIVO" }, 17: { day: "M", activity: "INIZIO ESAMI STATO", type: "INIZIO ESAMI STATO", description: "INIZIO ESAMI STATO" } } };
     
@@ -512,11 +597,10 @@
                 `</div>`;
       }
       document.getElementById('monthGrid').innerHTML = html;
-    
 
-if (typeof populateClassFilter==='function') populateClassFilter('classFilterMonth');
-if (typeof applyClassFilter==='function') applyClassFilter();if (typeof populateClassFilter==='function') populateClassFilter('classFilterMonth');
-if (typeof applyClassFilter==='function') applyClassFilter();}
+      if (typeof populateClassFilter==='function') populateClassFilter('classFilterMonth');
+      if (typeof applyClassFilter==='function') applyClassFilter();
+    }
 
     function generateWeeklyView(){
         let html = '';
@@ -562,6 +646,7 @@ if (typeof applyClassFilter==='function') applyClassFilter();}
       
       // Initialize multi-select filter after generating the annual view
       initializeMultiSelectFilter();
+      initializeClassDirectExport();
       applyMultiClassFilter();
     }
 
@@ -596,17 +681,6 @@ if (typeof applyClassFilter==='function') applyClassFilter();}
       while(filled < 7*6){ html += `<div class="mini-day muted"></div>`; filled++; }
       html += `</div></div>`;
       return html;
-    }
-
-    function generateLegend(){
-      const used = new Set();
-      Object.values(pctoData).forEach(m => Object.values(m).forEach(d => d.type && used.add(d.type)));
-      let html = '';
-      used.forEach(type => {
-        const col = activityColors[type] || '#667eea';
-        html += `<div class="legend-item"><div class="legend-color" style="background:${col}"></div><span>${type}</span></div>`;
-      });
-      document.getElementById('legendContainer').innerHTML = html;
     }
 
     function previousMonth(){ if(currentMonth===0){ currentMonth=11; currentYear--; } else currentMonth--; generateMonthlyView(); }
@@ -754,186 +828,345 @@ PRODID:-//PCTO Calendar//NONSGML v1.0//EN
         alert(`Il file "${filename}" è stato scaricato. Ora importa il file in Google Calendar.`);
     }
 
+    // --- Google Calendar Direct Export Functions ---
+    function initializeClassDirectExport() {
+      const select = document.getElementById('classDirectExport');
+      const classes = collectClasses();
+      
+      // Clear existing options
+      select.innerHTML = '<option value="">Seleziona una classe...</option>';
+      
+      classes.forEach(className => {
+        const option = document.createElement('option');
+        option.value = className;
+        option.textContent = className;
+        select.appendChild(option);
+      });
+      
+      // Add event listener
+      select.addEventListener('change', function() {
+        const btn = document.getElementById('exportClassBtn');
+        btn.disabled = !this.value;
+      });
+    }
+
+    function exportClassToGoogleCalendar() {
+      const selectedClass = document.getElementById('classDirectExport').value;
+      if (!selectedClass) {
+        alert('Seleziona prima una classe!');
+        return;
+      }
+      
+      const classEvents = getEventsForClass(selectedClass);
+      if (classEvents.length === 0) {
+        alert(`Nessun evento trovato per la classe ${selectedClass}.`);
+        return;
+      }
+      
+      // Create multiple Google Calendar URLs and open them
+      const googleCalendarUrls = [];
+      
+      classEvents.forEach(event => {
+        const title = encodeURIComponent(`PCTO - ${selectedClass}`);
+        const details = encodeURIComponent(`Attività PCTO per la classe ${selectedClass}: ${event.description}`);
+        const location = encodeURIComponent('IIS Mendel - Via Ferrazzi 15, Villa Cortese');
+        
+        const url = `https://www.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${event.startDate}/${event.endDate}&details=${details}&location=${location}`;
+        googleCalendarUrls.push(url);
+      });
+      
+      // Show confirmation dialog
+      const confirmMsg = `Verranno aperti ${classEvents.length} nuove schede per aggiungere tutti gli eventi della classe ${selectedClass} al tuo Google Calendar. Continui?`;
+      if (confirm(confirmMsg)) {
+        // Open the first few immediately
+        googleCalendarUrls.slice(0, 5).forEach((url, index) => {
+          setTimeout(() => {
+            window.open(url, '_blank');
+          }, index * 500); // Delay each by 500ms to avoid popup blocking
+        });
+        
+        // If there are more than 5 events, ask if user wants to continue
+        if (googleCalendarUrls.length > 5) {
+          setTimeout(() => {
+            if (confirm(`Ci sono altri ${googleCalendarUrls.length - 5} eventi. Vuoi continuare ad aprire le rimanenti schede?`)) {
+              googleCalendarUrls.slice(5).forEach((url, index) => {
+                setTimeout(() => {
+                  window.open(url, '_blank');
+                }, index * 500);
+              });
+            }
+          }, 3000);
+        }
+        
+        alert(`Processo avviato! Verranno aperte ${classEvents.length} schede di Google Calendar per la classe ${selectedClass}. Assicurati di aver disabilitato il blocco popup.`);
+      }
+    }
+
+    function getEventsForClass(className) {
+      const events = [];
+      
+      for (const monthKey in pctoData) {
+        for (const day in pctoData[monthKey]) {
+          const event = pctoData[monthKey][day];
+          if (event.type === className) {
+            const [year, month] = monthKey.split('-');
+            const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+            const dateString = `${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}`;
+            
+            events.push({
+              title: event.activity,
+              description: event.description,
+              startDate: dateString,
+              endDate: dateString,
+              date: date
+            });
+          }
+        }
+      }
+      
+      // Sort events by date
+      events.sort((a, b) => a.date - b.date);
+      
+      // Group consecutive days into single events
+      const groupedEvents = [];
+      let currentGroup = null;
+      
+      for (let i = 0; i < events.length; i++) {
+        const event = events[i];
+        const eventDate = new Date(event.date);
+        
+        if (currentGroup === null) {
+          // Start new group
+          currentGroup = {
+            title: event.title,
+            description: event.description,
+            startDate: event.startDate,
+            endDate: event.startDate,
+            date: event.date,
+            days: 1
+          };
+        } else {
+          // Check if this event is consecutive to the previous one
+          const prevDate = new Date(currentGroup.date);
+          prevDate.setDate(prevDate.getDate() + currentGroup.days);
+          
+          if (eventDate.getTime() === prevDate.getTime()) {
+            // Consecutive day - extend current group
+            currentGroup.endDate = event.startDate;
+            currentGroup.days++;
+            if (currentGroup.days > 1) {
+              currentGroup.description = `Settimana PCTO classe ${className} - ${currentGroup.days} giorni consecutivi`;
+            }
+          } else {
+            // Not consecutive - save current group and start new one
+            groupedEvents.push(currentGroup);
+            currentGroup = {
+              title: event.title,
+              description: event.description,
+              startDate: event.startDate,
+              endDate: event.startDate,
+              date: event.date,
+              days: 1
+            };
+          }
+        }
+      }
+      
+      // Don't forget the last group
+      if (currentGroup) {
+        groupedEvents.push(currentGroup);
+      }
+      
+      return groupedEvents;
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       generateMonthlyView();
-      generateLegend();
     });
   
-// --- Filtro classe (singola per vista mensile) ---
-var currentClassFilter = "";
+    // --- Filtro classe (singola per vista mensile) ---
+    var currentClassFilter = "";
 
-function isClassCode(t){
-  return /^[1-5](PA|PB|PC|PD|A|B|C|D)$/.test((t||"").toUpperCase());
-}
-
-function collectClasses(){
-  const classes = new Set();
-  for (const month in pctoData){
-    for (const day in pctoData[month]){
-      const t = (pctoData[month][day].type||"").toUpperCase();
-      if (isClassCode(t)) classes.add(t);
+    function isClassCode(t){
+      return /^[1-5](PA|PB|PC|PD|A|B|C|D)$/.test((t||"").toUpperCase());
     }
-  }
-  return Array.from(classes).sort();
-}
 
-function populateClassFilter(selectId){
-  const sel = document.getElementById(selectId);
-  if (!sel) return;
-  // reset options (keep "Tutte" if present)
-  while (sel.options.length > 0) sel.remove(0);
-  const optAll = document.createElement('option');
-  optAll.value = ""; optAll.textContent = "Tutte";
-  sel.appendChild(optAll);
-  collectClasses().forEach(c => {
-    const o = document.createElement('option');
-    o.value = c; o.textContent = c; sel.appendChild(o);
-  });
-  sel.value = currentClassFilter || "";
-}
-
-function applyClassFilter(){
-  const cls = (currentClassFilter||"").toUpperCase();
-  document.querySelectorAll('.activity-tag').forEach(tag => {
-    const t = (tag.getAttribute('data-type')||"").toUpperCase();
-    const holder = tag.parentElement; // container of the tag inside the day cell/annual cell
-    if (!holder) return;
-    holder.style.display = (!cls || t===cls) ? "" : "none";
-  });
-}
-
-function onClassFilterChange(sel){
-  currentClassFilter = (sel.value||"").toUpperCase();
-  // sync other filters if present
-  ['classFilterMonth','classFilterYear'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el && el!==sel) el.value = currentClassFilter;
-  });
-  applyClassFilter();
-}
-
-// --- Multi-Select Filter for Annual View ---
-let selectedClasses = new Set();
-
-function initializeMultiSelectFilter() {
-  const container = document.getElementById('classCheckboxes');
-  if (!container) return;
-  
-  const classes = collectClasses();
-  container.innerHTML = '';
-  
-  classes.forEach(className => {
-    const item = document.createElement('div');
-    item.className = 'class-checkbox-item';
-    item.onclick = () => toggleClass(className, item);
-    
-    item.innerHTML = `
-      <input type="checkbox" class="class-checkbox" id="checkbox-${className}" ${selectedClasses.has(className) ? 'checked' : ''}>
-      <label for="checkbox-${className}" class="class-checkbox-label">${className}</label>
-    `;
-    
-    if (selectedClasses.has(className)) {
-      item.classList.add('checked');
-    }
-    
-    container.appendChild(item);
-  });
-  
-  // If no classes are selected initially, select all
-  if (selectedClasses.size === 0) {
-    selectAllClasses();
-  }
-}
-
-function toggleClass(className, itemElement) {
-  const checkbox = itemElement.querySelector('input[type="checkbox"]');
-  
-  if (selectedClasses.has(className)) {
-    selectedClasses.delete(className);
-    checkbox.checked = false;
-    itemElement.classList.remove('checked');
-  } else {
-    selectedClasses.add(className);
-    checkbox.checked = true;
-    itemElement.classList.add('checked');
-  }
-  
-  applyMultiClassFilter();
-}
-
-function selectAllClasses() {
-  const classes = collectClasses();
-  selectedClasses.clear();
-  classes.forEach(c => selectedClasses.add(c));
-  
-  document.querySelectorAll('.class-checkbox-item').forEach(item => {
-    item.classList.add('checked');
-    item.querySelector('input[type="checkbox"]').checked = true;
-  });
-  
-  applyMultiClassFilter();
-}
-
-function deselectAllClasses() {
-  selectedClasses.clear();
-  
-  document.querySelectorAll('.class-checkbox-item').forEach(item => {
-    item.classList.remove('checked');
-    item.querySelector('input[type="checkbox"]').checked = false;
-  });
-  
-  applyMultiClassFilter();
-}
-
-function applyMultiClassFilter() {
-  // Only apply multi-class filter in annual view
-  if (!document.getElementById('annual').classList.contains('active')) {
-    return;
-  }
-  
-  document.querySelectorAll('.activity-tag').forEach(tag => {
-    const activityType = (tag.getAttribute('data-type') || "").toUpperCase();
-    const dayContainer = tag.closest('.mini-day');
-    
-    if (!dayContainer) return;
-    
-    // Ripristino di sicurezza per l'etichetta
-    tag.style.display = '';
-    
-    // Show if no classes are selected (show all) or if the activity type is in selected classes
-    const shouldShow = selectedClasses.size === 0 || selectedClasses.has(activityType);
-    
-    if (shouldShow) {
-      dayContainer.style.display = '';
-      tag.style.display = ''; // FIX: ripristina etichetta quando visibile
-      // If the day has activity, make sure it's styled properly
-      if (isClassCode(activityType)) {
-        dayContainer.classList.add('has-activity');
-        const color = activityColors[activityType] || '#667eea';
-        dayContainer.style.background = color;
-        dayContainer.style.color = '#fff';
+    function collectClasses(){
+      const classes = new Set();
+      for (const month in pctoData){
+        for (const day in pctoData[month]){
+          const t = (pctoData[month][day].type||"").toUpperCase();
+          if (isClassCode(t)) classes.add(t);
+        }
       }
-    } else {
-      // Hide the activity but keep the day visible with default styling
-      dayContainer.classList.remove('has-activity');
-      dayContainer.style.background = '#fff';
-      dayContainer.style.color = 'var(--text-primary)';
-      tag.style.display = 'none';
+      return Array.from(classes).sort();
     }
-  });
-  
-  // Handle days that have no activity tags but should be visible
-  document.querySelectorAll('.mini-day:not(.muted)').forEach(day => {
-    const activityTag = day.querySelector('.activity-tag');
-    if (!activityTag) {
-      // This day has no activities, always show it with default styling
-      day.style.display = '';
-      day.classList.remove('has-activity');
-      day.style.background = '#fff';
-      day.style.color = 'var(--text-primary)';
+
+    function populateClassFilter(selectId){
+      const sel = document.getElementById(selectId);
+      if (!sel) return;
+      // reset options (keep "Tutte" if present)
+      while (sel.options.length > 0) sel.remove(0);
+      const optAll = document.createElement('option');
+      optAll.value = ""; optAll.textContent = "Tutte";
+      sel.appendChild(optAll);
+      collectClasses().forEach(c => {
+        const o = document.createElement('option');
+        o.value = c; o.textContent = c; sel.appendChild(o);
+      });
+      sel.value = currentClassFilter || "";
     }
-  });
-}
+
+    function applyClassFilter(){
+      const cls = (currentClassFilter||"").toUpperCase();
+      document.querySelectorAll('.activity-tag').forEach(tag => {
+        const t = (tag.getAttribute('data-type')||"").toUpperCase();
+        const holder = tag.parentElement; // container of the tag inside the day cell/annual cell
+        if (!holder) return;
+        holder.style.display = (!cls || t===cls) ? "" : "none";
+      });
+    }
+
+    function onClassFilterChange(sel){
+      currentClassFilter = (sel.value||"").toUpperCase();
+      // sync other filters if present
+      ['classFilterMonth','classFilterYear'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el && el!==sel) el.value = currentClassFilter;
+      });
+      applyClassFilter();
+    }
+
+    // --- Multi-Select Filter for Annual View ---
+    let selectedClasses = new Set();
+
+    function initializeMultiSelectFilter() {
+      const container = document.getElementById('classCheckboxes');
+      if (!container) return;
+      
+      const classes = collectClasses();
+      container.innerHTML = '';
+      
+      classes.forEach(className => {
+        const item = document.createElement('div');
+        item.className = 'class-checkbox-item';
+        item.onclick = () => toggleClass(className, item);
+        
+        item.innerHTML = `
+          <input type="checkbox" class="class-checkbox" id="checkbox-${className}" ${selectedClasses.has(className) ? 'checked' : ''}>
+          <label for="checkbox-${className}" class="class-checkbox-label">${className}</label>
+        `;
+        
+        if (selectedClasses.has(className)) {
+          item.classList.add('checked');
+        }
+        
+        container.appendChild(item);
+      });
+      
+      // If no classes are selected initially, select all
+      if (selectedClasses.size === 0) {
+        selectAllClasses();
+      }
+    }
+
+    function toggleClass(className, itemElement) {
+      const checkbox = itemElement.querySelector('input[type="checkbox"]');
+      
+      if (selectedClasses.has(className)) {
+        selectedClasses.delete(className);
+        checkbox.checked = false;
+        itemElement.classList.remove('checked');
+      } else {
+        selectedClasses.add(className);
+        checkbox.checked = true;
+        itemElement.classList.add('checked');
+      }
+      
+      applyMultiClassFilter();
+    }
+
+    function selectAllClasses() {
+      const classes = collectClasses();
+      selectedClasses.clear();
+      classes.forEach(c => selectedClasses.add(c));
+      
+      document.querySelectorAll('.class-checkbox-item').forEach(item => {
+        item.classList.add('checked');
+        item.querySelector('input[type="checkbox"]').checked = true;
+      });
+      
+      applyMultiClassFilter();
+    }
+
+    function deselectAllClasses() {
+      selectedClasses.clear();
+      
+      document.querySelectorAll('.class-checkbox-item').forEach(item => {
+        item.classList.remove('checked');
+        item.querySelector('input[type="checkbox"]').checked = false;
+      });
+      
+      applyMultiClassFilter();
+    }
+
+    function applyMultiClassFilter() {
+      // Only apply multi-class filter in annual view
+      if (!document.getElementById('annual').classList.contains('active')) {
+        return;
+      }
+      
+      document.querySelectorAll('.activity-tag').forEach(tag => {
+        const activityType = (tag.getAttribute('data-type') || "").toUpperCase();
+        const dayContainer = tag.closest('.mini-day');
+        
+        if (!dayContainer) return;
+        
+        // Ripristino di sicurezza per l'etichetta
+        tag.style.display = '';
+        
+        // Show if no classes are selected (show all) or if the activity type is in selected classes
+        const shouldShow = selectedClasses.size === 0 || selectedClasses.has(activityType);
+        
+        if (shouldShow) {
+          dayContainer.style.display = '';
+          tag.style.display = ''; // FIX: ripristina etichetta quando visibile
+          // If the day has activity, make sure it's styled properly
+          if (isClassCode(activityType)) {
+            dayContainer.classList.add('has-activity');
+            const color = activityColors[activityType] || '#667eea';
+            dayContainer.style.background = color;
+            dayContainer.style.color = '#fff';
+          }
+        } else {
+          // Hide the activity but keep the day visible with default styling
+          dayContainer.classList.remove('has-activity');
+          dayContainer.style.background = '#fff';
+          dayContainer.style.color = 'var(--text-primary)';
+          tag.style.display = 'none';
+        }
+      });
+      
+      // Handle days that have no activity tags but should be visible
+      document.querySelectorAll('.mini-day:not(.muted)').forEach(day => {
+        const activityTag = day.querySelector('.activity-tag');
+        if (!activityTag) {
+          // This day has no activities, always show it with default styling
+          day.style.display = '';
+          day.classList.remove('has-activity');
+          day.style.background = '#fff';
+          day.style.color = 'var(--text-primary)';
+        }
+      });
+    }
 </script>
-<script>document.addEventListener('DOMContentLoaded', function(){ if (typeof populateClassFilter==='function'){ populateClassFilter('classFilterMonth'); populateClassFilter('classFilterYear'); } });</script></body>
+<script>
+document.addEventListener('DOMContentLoaded', function(){ 
+  if (typeof populateClassFilter==='function'){ 
+    populateClassFilter('classFilterMonth'); 
+    populateClassFilter('classFilterYear'); 
+  } 
+});
+</script>
+</body>
 </html>
